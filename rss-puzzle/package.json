@@ -6,14 +6,14 @@
   "scripts": {
     "start": "webpack serve --open --config ./webpack.config.ts --env mode=dev",
     "build": "webpack --config ./webpack.config.ts --env mode=prod",
-    "lint:prettier": "prettier ./src --check",
-    "lint:prettier:fix": "prettier ./src --write",
+    "lint:ci:format": "prettier ./src --check",
+    "lint:format": "prettier ./src --write",
     "lint:eslint": "eslint \"src/**/*.ts\"",
     "lint:eslint:fix": "eslint \"src/**/*.ts\" --fix",
     "lint:stylelint": "stylelint \"src/**/*.scss\"",
     "lint:stylelint:fix": "stylelint --fix \"src/**/*.scss\"",
-    "lint": "npm run lint:eslint && npm run lint:stylelint && npm run lint:prettier",
-    "lint:fix": "npm run lint:eslint:fix && npm run lint:stylelint:fix && npm run lint:prettier:fix",
+    "lint": "npm run lint:eslint && npm run lint:stylelint && npm run lint:ci:format",
+    "lint:fix": "npm run lint:eslint:fix && npm run lint:stylelint:fix && npm run lint:format",
     "prepare": "cd .. && husky rss-puzzle/.husky"
   },
   "keywords": [],
