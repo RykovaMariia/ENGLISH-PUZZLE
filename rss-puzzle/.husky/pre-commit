@@ -2,4 +2,4 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 cd rss-puzzle
-npx lint-staged
+npm run lint:fix

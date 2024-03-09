@@ -4,7 +4,7 @@
     "es2021": true
   },
   "extends": [
-    "airbnb",
+    "airbnb-base",
     "airbnb-typescript",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
@@ -21,6 +21,7 @@
   },
   "plugins": ["@typescript-eslint", "prettier", "import"],
   "rules": {
+    "react/jsx-filename-extension": [0],
     "import/no-unresolved": "error",
     "import/prefer-default-export": 0,
     "max-lines-per-function": ["error", { "max": 40, "skipBlankLines": true, "skipComments": true }]

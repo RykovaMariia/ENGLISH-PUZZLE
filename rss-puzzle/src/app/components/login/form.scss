@@ -1,0 +1,82 @@
+@use '../../../style/constants.scss';
+
+.login__form {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  width: 300px;
+  padding: 40px 20px;
+  border-radius: 10px;
+  box-shadow: constants.$color-shadow;
+  background-color: constants.$color-form;
+}
+
+.login__heading {
+  margin: auto;
+}
+
+.input {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.input__label {
+  cursor: pointer;
+  position: relative;
+  top: 40px;
+  padding: 5px 10px;
+  color: constants.$color-text-grey;
+  transition: all 0.7s ease;
+}
+
+.input__field {
+  cursor: pointer;
+  width: 250px;
+  height: 30px;
+  padding: 5px 10px;
+  border: solid 1px constants.$color-form;
+  background-color: constants.$color-form;
+  border-bottom: 2px solid constants.$color-text-grey;
+  transition: all 0.7s ease;
+  font-family: inherit;
+  font-size: 2rem;
+  font-weight: 100;
+}
+
+.input__field:focus,
+.input__field:valid {
+  outline: 0;
+  border-bottom-color: constants.$color-text-dark;
+}
+
+.input__field:focus + .input__label,
+.input__field:valid + .input__label {
+  color: constants.$color-text-dark;
+  transform: translateY(-40px);
+}
+
+.button {
+  cursor: pointer;
+  box-sizing: border-box;
+  margin-top: 20px;
+  font-family: inherit;
+  font-size: 2rem;
+  width: 150px;
+  padding: 8px 30px;
+  border-radius: 10px;
+  border: 0;
+  background-color: constants.$color-button;
+  box-shadow: constants.$color-shadow;
+  transition: all 0.7s ease;
+}
+
+.button:hover {
+  box-shadow: constants.$color-shadow-more;
+}
+
+.button:active {
+  box-shadow: constants.$color-shadow;
+  transform: scale(95%);
+}
