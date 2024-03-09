@@ -2,12 +2,15 @@ import './form.scss';
 import { BaseButton } from '../base/base-button';
 import { BaseElement } from '../base/base-element';
 import { BaseInputText } from '../base/base-input-text';
+import { StorageService } from '../../services/storage-service';
 
 const FIELD_NAME = ['First Name', 'Surname'];
 const ID = ['firstName', 'surname'];
 const REG_VALID = '(^[A-Z]{1})+[A-Za-z\\-]+$';
 
 export class Form extends BaseElement<HTMLFormElement> {
+  private inputFields: BaseInputText[] = [];
+
   constructor() {
     super({
       tagName: 'form',
@@ -39,10 +42,13 @@ export class Form extends BaseElement<HTMLFormElement> {
       const spanError = new BaseElement({ tagName: 'span', classNames: 'error' });
 
       const input = new BaseInputText({ classNames: ['input__field', 'input_empty'] }, ID[i]);
+      this.inputFields.push(input);
       input.setAttribute({ name: 'pattern', value: REG_VALID });
       input.setAttribute({ name: 'minlength', value: (3 + i).toString() });
       input.setRequired();
-      input.setHandler(() => Form.inputHandlerField(input, el, spanError, i));
+      input.setHandler(() => {
+        Form.inputHandlerField(input, el, spanError, i);
+      });
 
       div.insertChildren([spanError, input, label]);
       return div;
@@ -52,11 +58,21 @@ export class Form extends BaseElement<HTMLFormElement> {
   }
 
   addSubmitButton() {
-    const submitButton = new BaseButton({
-      attribute: { name: 'type', value: 'submit' },
-      textContent: 'Login',
-      classNames: 'button',
-    });
+    const submitButton = new BaseButton(
+      {
+        attribute: { name: 'type', value: 'submit' },
+        textContent: 'Login',
+        classNames: 'button',
+      },
+      (e) => {
+        e.preventDefault();
+        if (this.inputFields.every((input) => input.isValid())) {
+          this.inputFields.forEach((el, i) => {
+            StorageService.saveData(FIELD_NAME[i], el.getValue());
+          });
+        }
+      },
+    );
     this.insertChild(submitButton.getElement());
   }
 

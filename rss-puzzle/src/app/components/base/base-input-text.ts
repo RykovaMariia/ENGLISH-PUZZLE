@@ -24,6 +24,10 @@ export class BaseInputText extends BaseElement<HTMLInputElement> {
     }
   }
 
+  getValue() {
+    return this.element.value;
+  }
+
   isValid() {
     return this.element.validity.valid;
   }
