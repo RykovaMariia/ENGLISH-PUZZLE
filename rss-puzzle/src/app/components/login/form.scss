@@ -25,6 +25,15 @@
 .input__label {
   cursor: pointer;
   position: relative;
+  top: 0;
+  padding: 5px 10px;
+  color: constants.$color-text-grey;
+  transition: all 0.7s ease;
+}
+
+.input_empty + .input__label {
+  cursor: pointer;
+  position: relative;
   top: 40px;
   padding: 5px 10px;
   color: constants.$color-text-grey;
@@ -43,18 +52,31 @@
   font-family: inherit;
   font-size: 2rem;
   font-weight: 100;
+
+  &:focus,
+  &:valid {
+    outline: 0;
+    border-bottom-color: constants.$color-text-dark;
+
+    &:invalid {
+      border-bottom-color: constants.$color-text-invalid;
+    }
+
+    & + .input__label {
+      color: constants.$color-text-dark;
+    }
+  }
 }
 
-.input__field:focus,
-.input__field:valid {
-  outline: 0;
-  border-bottom-color: constants.$color-text-dark;
-}
-
-.input__field:focus + .input__label,
-.input__field:valid + .input__label {
+.input_empty:focus + .input__label {
   color: constants.$color-text-dark;
   transform: translateY(-40px);
+}
+
+.error {
+  width: 250px;
+  color: constants.$color-text-invalid;
+  font-size: 1.2rem;
 }
 
 .button {

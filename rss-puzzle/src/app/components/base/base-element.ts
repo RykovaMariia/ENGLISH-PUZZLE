@@ -1,10 +1,10 @@
 import { AttributeElement, BaseElementProps } from '../interfaces/element-props';
 
-export class BaseElement {
-  protected element: HTMLElement;
+export class BaseElement<T extends HTMLElement = HTMLElement> {
+  protected element: T;
 
   constructor(props: BaseElementProps) {
-    this.element = document.createElement(props.tagName);
+    this.element = document.createElement(props.tagName) as T;
     if (props.classNames) {
       this.setClassName(props.classNames);
     }
@@ -27,8 +27,12 @@ export class BaseElement {
     if (typeof classNames === 'string') {
       this.element.classList.add(classNames);
     } else {
-      classNames.forEach((el) => this.element.classList.add(el));
+      this.element.classList.add(...classNames);
     }
+  }
+
+  removeClassName(className: string) {
+    this.element.classList.remove(className);
   }
 
   setTextContent(text: string) {
