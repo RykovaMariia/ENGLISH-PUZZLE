@@ -30,6 +30,8 @@ function getError(input: Input, fieldName: string, countCharacter: number) {
 export class Form extends BaseElement<HTMLFormElement> {
   private inputFields: Input[] = [];
 
+  private spanElements: BaseElement[] = [];
+
   constructor(private router: IRouter) {
     super({
       tagName: 'form',
@@ -59,6 +61,7 @@ export class Form extends BaseElement<HTMLFormElement> {
         attribute: { name: 'for', value: ID[i] },
       });
       const spanError = new BaseElement({ tagName: 'span', classNames: 'error' });
+      this.spanElements.push(spanError);
 
       const input = new Input({ classNames: ['input__field', 'input_empty'] }, { id: ID[i] });
       this.inputFields.push(input);
@@ -87,8 +90,12 @@ export class Form extends BaseElement<HTMLFormElement> {
             firstName: this.inputFields[0].getValue(),
             surname: this.inputFields[1].getValue(),
           });
+          this.router.navigate(AppRoute.Start);
+        } else {
+          this.inputFields.forEach((input, i) => {
+            this.spanElements[i].setTextContent(getError(input, FIELD_NAME[i], i));
+          });
         }
-        this.router.navigate(AppRoute.NotFound);
       },
     );
     this.insertChild(submitButton.getElement());

@@ -1,0 +1,15 @@
+.start {
+  margin-top: 20vh;
+  display: flex;
+  place-content: center center;
+  flex-direction: column;
+  width: 600px;
+  gap: 40px;
+}
+
+.description {
+  text-align: center;
+  font-size: 2.5rem;
+  line-height: 1.5;
+  letter-spacing: 2px;
+}

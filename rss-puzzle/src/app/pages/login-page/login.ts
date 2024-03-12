@@ -8,7 +8,7 @@ export class Login extends BaseElement {
   private headingPuzzle = new BaseElement({
     tagName: 'h1',
     classNames: 'heading',
-    textContent: 'PUZZLE ENGLISH',
+    textContent: 'ENGLISH PUZZLE',
   });
 
   constructor(router: IRouter) {
