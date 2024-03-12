@@ -2,15 +2,19 @@ import './start.scss';
 
 import { BaseElement } from '../../components/base-element';
 import { localStorageService } from '../../services/storage-service';
+import { IRouter } from '../../interfaces/router';
+import { AppRoute } from '../../enums/app-route';
+import { Button } from '../../components/button/button';
 
 export class Start extends BaseElement {
-  constructor() {
+  constructor(private router: IRouter) {
     super({
       tagName: 'main',
       classNames: 'start',
     });
 
     this.drawPersonalizedGreeting();
+    this.drawStartButton();
     this.drawGameDescription();
   }
 
@@ -31,6 +35,18 @@ export class Start extends BaseElement {
     });
     sectionPersonalizedGreeting.insertChildren([welcome, userName]);
     this.insertChild(sectionPersonalizedGreeting.getElement());
+  }
+
+  drawStartButton() {
+    const startButton = new Button(
+      {
+        textContent: 'Start',
+        classNames: 'button__start',
+      },
+      () => this.router.navigate(AppRoute.Login),
+    );
+
+    this.insertChild(startButton.getElement());
   }
 
   drawGameDescription() {

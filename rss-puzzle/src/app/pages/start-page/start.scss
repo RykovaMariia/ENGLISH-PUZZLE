@@ -1,8 +1,11 @@
+@use '../../../style/placeholders.scss';
+@use '../../../style/mixins.scss';
+
 .start {
   display: flex;
   flex-direction: column;
   padding: 100px;
-  gap: 200px;
+  gap: 70px;
 }
 
 .personalized-greeting {
@@ -13,63 +16,66 @@
   flex-direction: column;
   align-items: center;
   gap: 15px;
-  animation-name: personalized-greeting;
-  animation-delay: 1.3s;
-  animation-duration: 1s;
-  animation-timing-function: easy;
-  animation-fill-mode: forwards;
-}
 
-@keyframes personalized-greeting {
-  100% {
-    transform: translateY(-100px);
+  @include mixins.keyframes(personalized-greeting) {
+    100% {
+      transform: translateY(-100px);
+    }
   }
+  animation-delay: 1.3s;
+  @include mixins.animate(personalized-greeting, 1s, ease, forwards);
 }
 
 .personalized-greeting__heading {
   position: relative;
   font-size: 6rem;
   font-weight: 900;
-  animation-name: welcome;
-  animation-duration: 0.9s;
-  animation-timing-function: ease;
-}
 
-@keyframes welcome {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
+  @include mixins.keyframes(welcome) {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
 
-  50% {
-    transform: translateY(-20px);
-    opacity: 1;
-  }
+    50% {
+      transform: translateY(-20px);
+      opacity: 1;
+    }
 
-  100% {
-    transform: translateY(0);
+    100% {
+      transform: translateY(0);
+    }
   }
+  @include mixins.animate(welcome, 0.9s, ease, forwards);
 }
 
 .personalizedGreeting__user-name {
   font-size: 3.5rem;
   font-weight: 800;
   opacity: 0;
-  animation-name: userName;
+
+  @include mixins.keyframes(user-name) {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
   animation-delay: 0.4s;
-  animation-duration: 0.9s;
-  animation-timing-function: easy;
-  animation-fill-mode: forwards;
+  @include mixins.animate(user-name, 0.9s, ease, forwards);
 }
 
-@keyframes user-name {
-  0% {
-    opacity: 0;
-  }
+.button__start {
+  margin: auto;
+  font-size: 3.5rem;
+  font-weight: 700;
+  width: 250px;
+  opacity: 0;
 
-  100% {
-    opacity: 1;
-  }
+  @extend %animation-main;
+  animation-delay: 2.3s;
+  @include mixins.animate(main, 0.5s, ease, forwards);
 }
 
 .game-description {
@@ -85,11 +91,10 @@
   opacity: 0;
   font-size: 3rem;
   font-weight: 800;
-  animation-name: opacity;
-  animation-delay: 2.3s;
-  animation-duration: 0.5s;
-  animation-timing-function: easy;
-  animation-fill-mode: forwards;
+
+  @extend %animation-main;
+  animation-delay: 2.8s;
+  @include mixins.animate(main, 0.5s, ease, forwards);
 }
 
 .description {
@@ -99,15 +104,8 @@
   letter-spacing: 2px;
   opacity: 0.001;
   width: 800px;
-  animation-name: opacity;
-  animation-delay: 2.3s;
-  animation-duration: 0.5s;
-  animation-timing-function: easy;
-  animation-fill-mode: forwards;
-}
 
-@keyframes opacity {
-  100% {
-    opacity: 1;
-  }
+  @extend %animation-main;
+  animation-delay: 3s;
+  @include mixins.animate(main, 0.5s, ease, forwards);
 }

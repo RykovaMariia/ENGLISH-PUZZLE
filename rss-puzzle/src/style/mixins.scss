@@ -1,0 +1,12 @@
+@mixin animate($animation, $duration, $method, $mode: 'none') {
+  animation-name: $animation;
+  animation-duration: $duration;
+  animation-timing-function: $method;
+  animation-fill-mode: $mode;
+}
+
+@mixin keyframes($name) {
+  @keyframes #{$name} {
+    @content;
+  }
+}

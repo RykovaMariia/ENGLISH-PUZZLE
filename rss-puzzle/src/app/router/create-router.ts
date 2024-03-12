@@ -21,7 +21,7 @@ export function createRoutes(router: IRouter) {
       path: AppRoute.Start,
       component: async () => {
         const { Start } = await import('../pages/start-page/start');
-        return new Start();
+        return new Start(router);
       },
     },
     {

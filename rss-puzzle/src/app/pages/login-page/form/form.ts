@@ -80,7 +80,7 @@ export class Form extends BaseElement<HTMLFormElement> {
       {
         attribute: { name: 'type', value: 'submit' },
         textContent: 'Login',
-        classNames: 'button',
+        classNames: 'button__login',
       },
       (e) => {
         e.preventDefault();
