@@ -37,12 +37,12 @@ export class Form extends BaseElement<HTMLFormElement> {
       tagName: 'form',
       classNames: 'login__form',
     });
-    this.addHeading();
-    this.addInputFields();
-    this.addSubmitButton();
+    this.drawHeading();
+    this.drawInputFields();
+    this.drawSubmitButton();
   }
 
-  addHeading() {
+  drawHeading() {
     const heading = new BaseElement({
       tagName: 'h2',
       classNames: 'login__heading',
@@ -51,7 +51,7 @@ export class Form extends BaseElement<HTMLFormElement> {
     this.insertChild(heading.getElement());
   }
 
-  addInputFields() {
+  drawInputFields() {
     const inputs = FIELD_NAME.map((el, i) => {
       const div = new BaseElement({ tagName: 'div', classNames: 'input' });
       const label = new BaseElement({
@@ -75,7 +75,7 @@ export class Form extends BaseElement<HTMLFormElement> {
     this.insertChildren(inputs);
   }
 
-  addSubmitButton() {
+  drawSubmitButton() {
     const submitButton = new Button(
       {
         attribute: { name: 'type', value: 'submit' },

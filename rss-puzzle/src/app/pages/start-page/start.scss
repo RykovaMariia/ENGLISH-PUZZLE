@@ -1,10 +1,95 @@
 .start {
-  margin-top: 20vh;
   display: flex;
-  place-content: center center;
   flex-direction: column;
-  width: 600px;
-  gap: 40px;
+  padding: 100px;
+  gap: 200px;
+}
+
+.personalized-greeting {
+  position: relative;
+  top: 100px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  animation-name: personalized-greeting;
+  animation-delay: 1.3s;
+  animation-duration: 1s;
+  animation-timing-function: easy;
+  animation-fill-mode: forwards;
+}
+
+@keyframes personalized-greeting {
+  100% {
+    transform: translateY(-100px);
+  }
+}
+
+.personalized-greeting__heading {
+  position: relative;
+  font-size: 6rem;
+  font-weight: 900;
+  animation-name: welcome;
+  animation-duration: 0.9s;
+  animation-timing-function: ease;
+}
+
+@keyframes welcome {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.personalizedGreeting__user-name {
+  font-size: 3.5rem;
+  font-weight: 800;
+  opacity: 0;
+  animation-name: userName;
+  animation-delay: 0.4s;
+  animation-duration: 0.9s;
+  animation-timing-function: easy;
+  animation-fill-mode: forwards;
+}
+
+@keyframes user-name {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.game-description {
+  position: relative;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.name {
+  opacity: 0;
+  font-size: 3rem;
+  font-weight: 800;
+  animation-name: opacity;
+  animation-delay: 2.3s;
+  animation-duration: 0.5s;
+  animation-timing-function: easy;
+  animation-fill-mode: forwards;
 }
 
 .description {
@@ -12,4 +97,17 @@
   font-size: 2.5rem;
   line-height: 1.5;
   letter-spacing: 2px;
+  opacity: 0.001;
+  width: 800px;
+  animation-name: opacity;
+  animation-delay: 2.3s;
+  animation-duration: 0.5s;
+  animation-timing-function: easy;
+  animation-fill-mode: forwards;
+}
+
+@keyframes opacity {
+  100% {
+    opacity: 1;
+  }
 }
