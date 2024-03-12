@@ -1,16 +1,25 @@
-import { AttributeElement, BaseElementProps } from '../interfaces/element-props';
+interface BaseElementProps {
+  tagName: string;
+  classNames?: string | string[];
+  textContent?: string;
+  parentNode?: HTMLElement;
+  attribute?: AttributeElement;
+}
+
+export type TaggedElementProps = Omit<BaseElementProps, 'tagName'>;
+
+interface AttributeElement {
+  name: string;
+  value: string;
+}
 
 export class BaseElement<T extends HTMLElement = HTMLElement> {
   protected element: T;
 
   constructor(props: BaseElementProps) {
     this.element = document.createElement(props.tagName) as T;
-    if (props.classNames) {
-      this.setClassName(props.classNames);
-    }
-    if (props.textContent) {
-      this.setTextContent(props.textContent);
-    }
+    this.setClassName(props.classNames ?? '');
+    this.setTextContent(props.textContent ?? '');
     if (props.parentNode) {
       this.insertChild(props.parentNode);
     }
@@ -49,7 +58,7 @@ export class BaseElement<T extends HTMLElement = HTMLElement> {
     children.forEach((el) => this.insertChild(el.getElement()));
   }
 
-  public setAttribute(attribute: AttributeElement) {
+  setAttribute(attribute: AttributeElement) {
     if (attribute) {
       this.element.setAttribute(attribute.name, attribute.value);
     }

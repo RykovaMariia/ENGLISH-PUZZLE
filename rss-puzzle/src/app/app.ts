@@ -1,9 +1,11 @@
-import { Login } from './components/login/login';
+import { router } from './router/router';
 
 export class App {
-  private login = new Login();
+  constructor(private container: HTMLElement) {
+    this.container = container;
+  }
 
   start() {
-    document.body.prepend(this.login.getElement());
+    router.init(this.container);
   }
 }

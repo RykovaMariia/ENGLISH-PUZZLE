@@ -1,16 +1,42 @@
-const KEY_PREFIX = 'rm';
+class StorageService<T> {
+  constructor(private storageKeyPrefix: string) {}
 
-export class StorageService {
-  static saveData(key: string, data: unknown): void {
-    const storageKey = `${KEY_PREFIX}_${key}`;
+  private getStorageKey(key: string): string {
+    return `${this.storageKeyPrefix}_${key}`;
+  }
 
+  saveData<K extends keyof T>(key: K, data: T[K]): void {
+    const storageKey = this.getStorageKey(key.toString());
     localStorage.setItem(storageKey, JSON.stringify(data));
   }
 
-  static getData(key: string) {
-    const storageKey = `${KEY_PREFIX}_${key}`;
-
+  getData<K extends keyof T>(key: K, validate?: (data: unknown) => data is T[K]): T[K] | null {
+    const storageKey = this.getStorageKey(key.toString());
     const data = localStorage.getItem(storageKey);
-    return data ? JSON.parse(data) : null;
+
+    if (data === null) {
+      return null;
+    }
+    try {
+      const result: unknown = JSON.parse(data);
+      if (validate) {
+        return validate(result) ? result : null;
+      }
+      return result as T[K];
+    } catch (error) {
+      console.error('Error parsing JSON:', error);
+      return null;
+    }
   }
 }
+
+export type LocalStorageState = {
+  userFullName: UserFullName;
+};
+
+interface UserFullName {
+  firstName: string;
+  surname: string;
+}
+
+export const localStorageService = new StorageService<LocalStorageState>('PUZZLE_RM');

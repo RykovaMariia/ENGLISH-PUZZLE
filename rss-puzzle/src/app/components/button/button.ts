@@ -1,10 +1,7 @@
-import { BaseElementProps } from '../interfaces/element-props';
-import { BaseElement } from './base-element';
+import { BaseElement, TaggedElementProps } from '../base-element';
 
-export type BaseButtonType = Omit<BaseElementProps, 'tagName'>;
-
-export class BaseButton extends BaseElement {
-  constructor(props: BaseButtonType, cb?: (e: Event) => void) {
+export class Button extends BaseElement {
+  constructor(props: TaggedElementProps, cb?: (e: Event) => void) {
     super({ tagName: 'button', ...props });
     if (cb) this.setHandler(cb);
   }

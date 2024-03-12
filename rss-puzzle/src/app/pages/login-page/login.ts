@@ -1,6 +1,8 @@
 import './login.scss';
-import { BaseElement } from '../base/base-element';
-import { Form } from './form';
+
+import { Form } from './form/form';
+import { BaseElement } from '../../components/base-element';
+import { IRouter } from '../../interfaces/router';
 
 export class Login extends BaseElement {
   private headingPuzzle = new BaseElement({
@@ -9,13 +11,12 @@ export class Login extends BaseElement {
     textContent: 'PUZZLE ENGLISH',
   });
 
-  private form = new Form();
-
-  constructor() {
+  constructor(router: IRouter) {
     super({
       tagName: 'main',
       classNames: 'login',
     });
-    this.insertChildren([this.headingPuzzle, this.form]);
+    const form = new Form(router);
+    this.insertChildren([this.headingPuzzle, form]);
   }
 }
