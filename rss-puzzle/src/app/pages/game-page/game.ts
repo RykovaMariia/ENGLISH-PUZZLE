@@ -4,9 +4,9 @@ import { getWords } from '../../utils/words-game';
 import { ResultSection } from './result-section/result-section';
 import { SourceSection } from './source-section/source-section';
 
-const LEVEL = 2;
-const ROUND = 2;
-const SENTENCE = 7;
+const LEVEL = 1;
+const ROUND = 0;
+const SENTENCE = 0;
 
 export class Game extends BaseElement {
   private words: string[] | null = getWords(LEVEL, ROUND, SENTENCE);
@@ -33,11 +33,10 @@ export class Game extends BaseElement {
         if (this.sourceSection.getElement().contains(htmlEl)) {
           this.resultSection.addWordInResult(htmlEl, SENTENCE);
           this.sourceSection.insertChild(emptyEl);
+        } else {
+          this.sourceSection.addWordInSource(htmlEl);
+          this.resultSection.addEmptyInResult(emptyEl, SENTENCE);
         }
-        // else {
-        //   this.sourceSection.addWordInSource(htmlEl);
-        //   this.resultSection.addEmptyInResult(emptyEl, SENTENCE);
-        // }
       });
     });
   }

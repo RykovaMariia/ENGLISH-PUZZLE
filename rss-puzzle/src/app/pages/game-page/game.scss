@@ -25,6 +25,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 10px;
   border: solid 1px constants.$color-text-dark;
   gap: 10px;
 }
@@ -37,6 +38,11 @@
   border: solid 1px constants.$color-text-dark;
   text-align: center;
   height: 35px;
+
+  &:hover,
+  :active {
+    border: solid 1px constants.$color-text-invalid;
+  }
 }
 
 .empty {
@@ -44,5 +50,6 @@
   cursor: default;
   flex-grow: 1;
   padding: 5px;
+  border: solid 1px constants.$color-opacity;
   color: constants.$color-opacity;
 }
