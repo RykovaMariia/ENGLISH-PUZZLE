@@ -43,7 +43,7 @@ export class Start extends BaseElement {
         textContent: 'Start',
         classNames: 'button__start',
       },
-      () => this.router.navigate(AppRoute.Login),
+      () => this.router.navigate(AppRoute.Game),
     );
 
     this.insertChild(startButton.getElement());

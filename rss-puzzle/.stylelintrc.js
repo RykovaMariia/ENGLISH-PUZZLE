@@ -25,24 +25,6 @@ module.exports = {
     'scss/operator-no-newline-after': true,
     'scss/operator-no-newline-before': true,
     'scss/operator-no-unspaced': true,
-    'scss/at-mixin-pattern': [
-      '^[a-z][a-zA-Z]+$',
-      {
-        message: 'Expected mixin to be camelCase with letters only',
-      },
-    ],
-    'scss/at-function-pattern': [
-      '^[a-z][a-zA-Z]+$',
-      {
-        message: 'Expected function to be camelCase with letters only',
-      },
-    ],
-    'scss/percent-placeholder-pattern': [
-      '^[a-z][a-zA-Z]+$',
-      {
-        message: 'Expected placeholder to be camelCase with letters only',
-      },
-    ],
     'scss/double-slash-comment-empty-line-before': [
       'always',
       {

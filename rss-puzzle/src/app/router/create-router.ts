@@ -25,6 +25,13 @@ export function createRoutes(router: IRouter) {
       },
     },
     {
+      path: AppRoute.Game,
+      component: async () => {
+        const { Game } = await import('../pages/game-page/game');
+        return new Game();
+      },
+    },
+    {
       path: AppRoute.NotFound,
       component: async () => {
         const { NotFound } = await import('../pages/not-found-page/not-found');

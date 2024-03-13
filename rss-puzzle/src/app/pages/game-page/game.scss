@@ -1,0 +1,48 @@
+@use '../../../style/placeholders.scss';
+@use '../../../style/mixins.scss';
+@use '../../../style/constants.scss';
+
+.game {
+  opacity: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 40px;
+
+  @extend %animation-main;
+  @include mixins.animate(main, 0.5s, ease, forwards);
+}
+
+.result-sentence {
+  height: 35px;
+  width: 700px;
+  display: flex;
+  border: solid 1px constants.$color-text-dark;
+}
+
+.source-data {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: solid 1px constants.$color-text-dark;
+  gap: 10px;
+}
+
+.word {
+  box-sizing: border-box;
+  cursor: pointer;
+  flex-grow: 1;
+  padding: 5px;
+  border: solid 1px constants.$color-text-dark;
+  text-align: center;
+  height: 35px;
+}
+
+.empty {
+  user-select: none;
+  cursor: default;
+  flex-grow: 1;
+  padding: 5px;
+  color: constants.$color-opacity;
+}
