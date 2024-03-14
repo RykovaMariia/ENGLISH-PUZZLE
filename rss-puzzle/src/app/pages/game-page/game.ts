@@ -24,66 +24,109 @@ export class Game extends BaseElement {
 
   private checkButton: Button | undefined;
 
+  private continueButton: Button | undefined;
+
+  private buttons: BaseElement | undefined;
+
+  private handlers: Map<Element, () => void> = new Map();
+
   constructor() {
     super({
       tagName: 'main',
       classNames: 'game',
     });
-    this.draw();
+    this.drawGame();
   }
 
   removeGame() {
     this.resultSection?.getElement().remove();
     this.sourceSection?.getElement().remove();
-    this.checkButton?.getElement().remove();
+    this.buttons?.getElement().remove();
   }
 
-  draw() {
+  drawGame() {
     this.words = getWords(this.level, this.round, this.sentence);
     this.resultSection = new ResultSection(this.level, this.round, this.sentence);
     this.sourceSection = new SourceSection(this.words);
+    this.buttons = this.getButtons();
+    this.insertChildren([this.resultSection, this.sourceSection, this.buttons]);
+  }
+
+  getButtons() {
+    const divButtons = new BaseElement({
+      tagName: 'div',
+      classNames: 'buttons',
+    });
+
     this.checkButton = new Button(
       {
-        classNames: ['button', 'button__check'],
+        classNames: ['button', 'button_check'],
         textContent: 'CHECK',
       },
       () => {
         if (this.resultSection?.isCorrectedWordOrder()) {
-          this.sentence += 1;
-          this.removeGame();
-          this.draw();
+          this.continueButton?.enableButton();
+          this.addClickWordCardsHandler(false);
         } else {
           this.resultSection?.selectedUncorrectedWordOrder();
         }
       },
     );
 
-    this.addClickHandlerForWordElements();
+    this.continueButton = new Button(
+      {
+        classNames: ['button', 'button_continue'],
+        textContent: 'CONTINUE',
+      },
+      () => {
+        this.sentence += 1;
+        this.removeGame();
+        this.drawGame();
+      },
+    );
+
+    this.addClickWordCardsHandler(true);
     this.checkButton.disableButton();
-    this.insertChildren([this.resultSection, this.sourceSection, this.checkButton]);
+    this.continueButton.disableButton();
+    divButtons.insertChildren([this.checkButton, this.continueButton]);
+    return divButtons;
   }
 
-  addClickHandlerForWordElements() {
+  addClickWordCardsHandler(isAdd: boolean) {
     this.sourceSection?.getSourceWordElements()?.forEach((el, i) => {
-      const htmlEl = el.getElement();
+      const wordCardEl = el.getElement();
       const emptyEl = this.resultSection?.getResultEmptyElements()[i].getElement();
       if (emptyEl) {
-        htmlEl.addEventListener('click', () => {
-          this.resultSection?.deleteSelected();
-          if (this.sourceSection?.getElement().contains(htmlEl)) {
-            this.resultSection?.addWordInResult(htmlEl);
-            this.sourceSection.insertChild(emptyEl);
-          } else {
-            this.sourceSection?.addWordInSource(htmlEl);
-            this.resultSection?.addEmptyInResult(emptyEl);
+        const handler = () => this.clickWordCardsHandler(wordCardEl, emptyEl);
+        if (isAdd) {
+          if (!this.handlers.has(wordCardEl)) {
+            this.handlers.set(wordCardEl, handler);
+            wordCardEl.addEventListener('click', handler);
           }
-          if (this.resultSection?.canClickCheck()) {
-            this.checkButton?.enableButton();
-          } else {
-            this.checkButton?.disableButton();
+        } else {
+          const existingHandler = this.handlers.get(wordCardEl);
+          if (existingHandler) {
+            wordCardEl.removeEventListener('click', existingHandler);
+            this.handlers.delete(wordCardEl);
           }
-        });
+        }
       }
     });
+  }
+
+  clickWordCardsHandler(wordCardEl: HTMLElement, emptyEl: HTMLElement) {
+    this.resultSection?.deleteSelected();
+    if (this.sourceSection?.getElement().contains(wordCardEl)) {
+      this.resultSection?.addWordInResult(wordCardEl);
+      this.sourceSection.insertChild(emptyEl);
+    } else {
+      this.sourceSection?.addWordInSource(wordCardEl);
+      this.resultSection?.addEmptyInResult(emptyEl);
+    }
+    if (this.resultSection?.canClickCheck()) {
+      this.checkButton?.enableButton();
+    } else {
+      this.checkButton?.disableButton();
+    }
   }
 }
