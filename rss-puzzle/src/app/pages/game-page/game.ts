@@ -7,7 +7,7 @@ import { Button } from '../../components/button/button';
 
 const LEVEL = 1;
 const ROUND = 0;
-const SENTENCE = 0;
+const SENTENCE = 9;
 
 export class Game extends BaseElement {
   private level = LEVEL;
@@ -63,26 +63,15 @@ export class Game extends BaseElement {
         classNames: ['button', 'button_check'],
         textContent: 'CHECK',
       },
-      () => {
-        if (this.resultSection?.isCorrectedWordOrder()) {
-          this.continueButton?.enableButton();
-          this.addClickWordCardsHandler(false);
-        } else {
-          this.resultSection?.selectedUncorrectedWordOrder();
-        }
-      },
+      () => this.clickCheckButton(),
     );
 
     this.continueButton = new Button(
       {
-        classNames: ['button', 'button_continue'],
+        classNames: ['button', 'continue', 'button_hidden'],
         textContent: 'CONTINUE',
       },
-      () => {
-        this.sentence += 1;
-        this.removeGame();
-        this.drawGame();
-      },
+      () => this.clickContinueButton(),
     );
 
     this.addClickWordCardsHandler(true);
@@ -90,6 +79,30 @@ export class Game extends BaseElement {
     this.continueButton.disableButton();
     divButtons.insertChildren([this.checkButton, this.continueButton]);
     return divButtons;
+  }
+
+  clickCheckButton() {
+    if (this.resultSection?.isCorrectedWordOrder()) {
+      this.continueButton?.enableButton();
+      this.addClickWordCardsHandler(false);
+      this.continueButton?.removeClassName('button_hidden');
+      this.checkButton?.setClassName('button_hidden');
+    } else {
+      this.resultSection?.selectedUncorrectedWordOrder();
+    }
+  }
+
+  clickContinueButton() {
+    if (this.sentence < 9) {
+      this.sentence += 1;
+      this.removeGame();
+      this.drawGame();
+    } else {
+      this.round += 1;
+      this.sentence = 0;
+      this.removeGame();
+      this.drawGame();
+    }
   }
 
   addClickWordCardsHandler(isAdd: boolean) {
