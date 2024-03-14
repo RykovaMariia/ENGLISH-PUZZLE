@@ -33,24 +33,45 @@
 .word {
   box-sizing: border-box;
   cursor: pointer;
+  user-select: none;
   flex-grow: 1;
   padding: 5px;
-  border: solid 1px constants.$color-text-dark;
+  border: solid 2px constants.$color-text-dark;
   text-align: center;
   height: 35px;
 
   &:hover,
   :active {
-    border: solid 1px constants.$color-text-invalid;
+    border: solid 2px constants.$color-button;
   }
+}
+
+.word_inactive {
+  &:hover,
+  :active {
+    cursor: auto;
+    border: solid 2px constants.$color-text-dark;
+  }
+}
+
+.corrected {
+  border: solid 2px constants.$color-background-body-light;
+}
+
+.uncorrected {
+  border: solid 2px constants.$color-text-invalid;
 }
 
 .empty {
   text-align: center;
-  user-select: none;
   cursor: default;
   flex-grow: 1;
   padding: 5px;
-  border: solid 1px constants.$color-text-invalid;
+  border: solid 1px constants.$color-opacity;
   color: constants.$color-opacity;
+
+  &:hover,
+  :active {
+    border: solid 1px constants.$color-opacity;
+  }
 }

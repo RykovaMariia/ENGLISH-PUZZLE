@@ -15,6 +15,12 @@ export class Button extends BaseElement {
     }
   }
 
+  enableButton() {
+    if (this.element instanceof HTMLButtonElement) {
+      this.element.disabled = false;
+    }
+  }
+
   setHandler(cb: (e: Event) => void) {
     if (typeof cb === 'function') {
       this.element.addEventListener('click', (e) => cb(e));

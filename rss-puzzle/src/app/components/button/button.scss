@@ -13,13 +13,19 @@
   background-color: constants.$color-button;
   box-shadow: constants.$color-shadow;
   transition: all 0.7s ease;
-}
 
-.button:hover {
-  box-shadow: constants.$color-shadow-more;
-}
+  &:hover {
+    box-shadow: constants.$color-shadow-more;
+  }
 
-.button:active {
-  box-shadow: constants.$color-shadow;
-  transform: scale(95%);
+  &:active {
+    box-shadow: constants.$color-shadow;
+    transform: scale(95%);
+  }
+
+  &:disabled {
+    box-shadow: constants.$color-shadow;
+    transform: scale(100%);
+    cursor: auto;
+  }
 }
