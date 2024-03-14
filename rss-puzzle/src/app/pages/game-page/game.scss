@@ -67,15 +67,20 @@
   cursor: default;
   flex-grow: 1;
   padding: 5px;
-  border: solid 1px constants.$color-opacity;
+  border: solid 2px constants.$color-opacity;
   color: constants.$color-opacity;
 
   &:hover,
   :active {
-    border: solid 1px constants.$color-opacity;
+    border: solid 2px constants.$color-opacity;
   }
 }
 
 .button_hidden {
   display: none;
+}
+
+.button_auto-complete {
+  width: 200px;
+  user-select: none;
 }

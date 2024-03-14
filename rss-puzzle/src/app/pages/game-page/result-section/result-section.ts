@@ -1,4 +1,5 @@
 import { BaseElement } from '../../../components/base-element';
+import { GameProps } from '../../../interfaces/game-props';
 import { getWords } from '../../../utils/words-game';
 
 export class ResultSection extends BaseElement {
@@ -8,18 +9,18 @@ export class ResultSection extends BaseElement {
 
   private sentence: number;
 
-  private currentElements: HTMLCollection;
+  private currentSentence: BaseElement;
 
   private emptyHtmlElement: HTMLElement[];
 
-  constructor(level: number, round: number, sentence: number) {
+  constructor(gameProps: GameProps) {
     super({
       tagName: 'section',
       classNames: 'result',
     });
-    this.sentence = sentence;
-    this.draw(level, round);
-    this.currentElements = this.resultSentences[this.sentence].getElement().children;
+    this.sentence = gameProps.sentence;
+    this.draw(gameProps.level, gameProps.round);
+    this.currentSentence = this.resultSentences[this.sentence];
     this.emptyHtmlElement = this.emptyElements[this.sentence].map((el) => el.getElement());
   }
 
@@ -29,13 +30,15 @@ export class ResultSection extends BaseElement {
         tagName: 'div',
         classNames: 'result-sentence',
       });
-      const emptyElements = getWords(level, round, i)?.map((el) => {
+
+      const emptyElements = getWords({ level, round, sentence: i })?.map((el) => {
         return new BaseElement({
           tagName: 'div',
           classNames: ['word', 'word_inactive'],
           textContent: el,
         });
       });
+
       if (i >= this.sentence) {
         emptyElements?.map((el) => el.setClassName('empty'));
       }
@@ -52,8 +55,9 @@ export class ResultSection extends BaseElement {
   }
 
   addWordInResult(wordElement: HTMLElement) {
-    Array.from(this.currentElements)
-      .find((el) => this.emptyHtmlElement.includes(el as HTMLElement))
+    this.currentSentence
+      .getChildren()
+      .find((el) => this.emptyHtmlElement.includes(el))
       ?.before(wordElement);
   }
 
@@ -62,29 +66,23 @@ export class ResultSection extends BaseElement {
   }
 
   canClickCheck() {
-    return Array.from(this.currentElements).every(
-      (el) => !this.emptyHtmlElement.includes(el as HTMLElement),
-    );
+    return this.currentSentence.getChildren().every((el) => !this.emptyHtmlElement.includes(el));
   }
 
   isCorrectedWordOrder() {
-    return Array.from(this.currentElements).every((el, i) => {
-      return (el as HTMLElement).innerText === this.emptyHtmlElement[i].innerText;
+    return this.currentSentence.getChildren().every((el, i) => {
+      return el.textContent === this.emptyHtmlElement[i].innerText;
     });
   }
 
   selectedUncorrectedWordOrder() {
-    Array.from(this.currentElements)
-      .filter((el, i) => {
-        return (el as HTMLElement).innerText === this.emptyHtmlElement[i].innerText;
-      })
-      .map((el) => el.classList.add('corrected'));
-
-    Array.from(this.currentElements)
-      .filter((el, i) => {
-        return (el as HTMLElement).innerText !== this.emptyHtmlElement[i].innerText;
-      })
-      .map((el) => el.classList.add('uncorrected'));
+    this.currentSentence.getChildren().forEach((el, i) => {
+      if (el.textContent === this.emptyHtmlElement[i].innerText) {
+        el.classList.add('corrected');
+      } else {
+        el.classList.add('uncorrected');
+      }
+    });
   }
 
   deleteSelected() {

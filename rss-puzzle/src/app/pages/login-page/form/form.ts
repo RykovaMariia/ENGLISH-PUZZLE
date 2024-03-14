@@ -64,9 +64,12 @@ export class Form extends BaseElement<HTMLFormElement> {
       this.spanElements.push(spanError);
 
       const input = new Input({ classNames: ['input__field', 'input_empty'] }, { id: ID[i] });
+
       this.inputFields.push(input);
       input.setValidation({ isRequired: true, patternValue: REG_VALID, minlengthValue: i + 3 });
-      input.setHandler(() => spanError.setTextContent(getError(input, el, i)));
+      input.setHandler(() => {
+        spanError.setTextContent(getError(input, el, i));
+      });
 
       div.insertChildren([spanError, input, label]);
       return div;

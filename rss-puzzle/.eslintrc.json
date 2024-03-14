@@ -21,6 +21,7 @@
   },
   "plugins": ["@typescript-eslint", "prettier", "import"],
   "rules": {
+    "prettier/prettier": "error",
     "react/jsx-filename-extension": [0],
     "import/no-unresolved": "error",
     "import/prefer-default-export": 0,

@@ -4,6 +4,7 @@ import { wordCollectionLevel3 } from '../data/wordCollectionLevel3';
 import { wordCollectionLevel4 } from '../data/wordCollectionLevel4';
 import { wordCollectionLevel5 } from '../data/wordCollectionLevel5';
 import { wordCollectionLevel6 } from '../data/wordCollectionLevel6';
+import { GameProps } from '../interfaces/game-props';
 import { WordCollection } from '../interfaces/words';
 
 function getWordCollection(level: number) {
@@ -34,10 +35,10 @@ function getWordCollection(level: number) {
   return wordCollection;
 }
 
-export function getWords(level: number, round: number, sentence: number) {
-  const wordCollection = getWordCollection(level);
+export function getWords(gameProps: GameProps) {
+  const wordCollection = getWordCollection(gameProps.level);
   if (wordCollection) {
-    return wordCollection?.rounds[round].words[sentence].textExample.split(' ');
+    return wordCollection?.rounds[gameProps.round].words[gameProps.sentence].textExample.split(' ');
   }
   return null;
 }

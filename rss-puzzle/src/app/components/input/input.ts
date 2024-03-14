@@ -32,9 +32,7 @@ export class Input extends BaseElement<HTMLInputElement> {
   }
 
   setHandler(cb: (e: Event) => void) {
-    if (typeof cb === 'function') {
-      this.element.addEventListener('input', (e) => cb(e));
-    }
+    this.element.addEventListener('input', (e) => cb(e));
   }
 
   getValue() {

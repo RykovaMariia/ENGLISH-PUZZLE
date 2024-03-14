@@ -63,4 +63,12 @@ export class BaseElement<T extends HTMLElement = HTMLElement> {
       this.element.setAttribute(attribute.name, attribute.value);
     }
   }
+
+  getChildren(): HTMLElement[] {
+    return Array.from(this.element.children) as HTMLElement[];
+  }
+
+  destroy() {
+    this.element.remove();
+  }
 }

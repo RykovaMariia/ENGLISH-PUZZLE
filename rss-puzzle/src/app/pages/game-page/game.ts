@@ -1,23 +1,12 @@
 import './game.scss';
 import { BaseElement } from '../../components/base-element';
-import { getWords } from '../../utils/words-game';
 import { ResultSection } from './result-section/result-section';
 import { SourceSection } from './source-section/source-section';
 import { Button } from '../../components/button/button';
-
-const LEVEL = 1;
-const ROUND = 0;
-const SENTENCE = 9;
+import { gameService } from '../../services/game-service';
+import { GameProps } from '../../interfaces/game-props';
 
 export class Game extends BaseElement {
-  private level = LEVEL;
-
-  private round = ROUND;
-
-  private sentence = SENTENCE;
-
-  private words: string[] | null = [];
-
   private resultSection: ResultSection | undefined;
 
   private sourceSection: SourceSection | undefined;
@@ -25,6 +14,8 @@ export class Game extends BaseElement {
   private checkButton: Button | undefined;
 
   private continueButton: Button | undefined;
+
+  private autoCompleteButton: Button | undefined;
 
   private buttons: BaseElement | undefined;
 
@@ -35,19 +26,19 @@ export class Game extends BaseElement {
       tagName: 'main',
       classNames: 'game',
     });
-    this.drawGame();
+
+    this.drawGame(gameService.getGameProps(), gameService.getWords());
   }
 
   removeGame() {
-    this.resultSection?.getElement().remove();
-    this.sourceSection?.getElement().remove();
-    this.buttons?.getElement().remove();
+    this.resultSection?.destroy();
+    this.sourceSection?.destroy();
+    this.buttons?.destroy();
   }
 
-  drawGame() {
-    this.words = getWords(this.level, this.round, this.sentence);
-    this.resultSection = new ResultSection(this.level, this.round, this.sentence);
-    this.sourceSection = new SourceSection(this.words);
+  drawGame(gameProps: GameProps, words: string[] | null) {
+    this.resultSection = new ResultSection(gameProps);
+    this.sourceSection = new SourceSection(words);
     this.buttons = this.getButtons();
     this.insertChildren([this.resultSection, this.sourceSection, this.buttons]);
   }
@@ -74,10 +65,18 @@ export class Game extends BaseElement {
       () => this.clickContinueButton(),
     );
 
+    this.autoCompleteButton = new Button(
+      {
+        classNames: ['button', 'button_auto-complete'],
+        textContent: `don't know`,
+      },
+      () => this.clickAutoComplete(),
+    );
+
     this.addClickWordCardsHandler(true);
     this.checkButton.disableButton();
     this.continueButton.disableButton();
-    divButtons.insertChildren([this.checkButton, this.continueButton]);
+    divButtons.insertChildren([this.autoCompleteButton, this.checkButton, this.continueButton]);
     return divButtons;
   }
 
@@ -93,36 +92,50 @@ export class Game extends BaseElement {
   }
 
   clickContinueButton() {
-    if (this.sentence < 9) {
-      this.sentence += 1;
-      this.removeGame();
-      this.drawGame();
-    } else {
-      this.round += 1;
-      this.sentence = 0;
-      this.removeGame();
-      this.drawGame();
-    }
+    gameService.nextSentence();
+    this.removeGame();
+    this.drawGame(gameService.getGameProps(), gameService.getWords());
+  }
+
+  clickAutoComplete() {
+    this.sourceSection?.getSourceWordElements()?.forEach((el) => {
+      this.resultSection?.addEmptyInResult(el.getElement());
+
+      const existingHandler = this.handlers.get(el.getElement());
+      if (existingHandler) {
+        el.getElement().removeEventListener('click', existingHandler);
+        this.handlers.delete(el.getElement());
+      }
+    });
+
+    this.resultSection?.getResultEmptyElements().forEach((el) => {
+      this.sourceSection?.addWordInSource(el.getElement());
+    });
+
+    this.autoCompleteButton?.destroy();
+    this.checkButton?.destroy();
+    this.continueButton?.enableButton();
+    this.continueButton?.removeClassName('button_hidden');
   }
 
   addClickWordCardsHandler(isAdd: boolean) {
     this.sourceSection?.getSourceWordElements()?.forEach((el, i) => {
       const wordCardEl = el.getElement();
       const emptyEl = this.resultSection?.getResultEmptyElements()[i].getElement();
-      if (emptyEl) {
-        const handler = () => this.clickWordCardsHandler(wordCardEl, emptyEl);
-        if (isAdd) {
-          if (!this.handlers.has(wordCardEl)) {
-            this.handlers.set(wordCardEl, handler);
-            wordCardEl.addEventListener('click', handler);
-          }
-        } else {
-          const existingHandler = this.handlers.get(wordCardEl);
-          if (existingHandler) {
-            wordCardEl.removeEventListener('click', existingHandler);
-            this.handlers.delete(wordCardEl);
-          }
+      if (!emptyEl) return;
+      const handler = () => this.clickWordCardsHandler(wordCardEl, emptyEl);
+      if (isAdd) {
+        if (this.handlers.has(wordCardEl)) {
+          return;
         }
+        this.handlers.set(wordCardEl, handler);
+        wordCardEl.addEventListener('click', handler);
+        return;
+      }
+      const existingHandler = this.handlers.get(wordCardEl);
+      if (existingHandler) {
+        wordCardEl.removeEventListener('click', existingHandler);
+        this.handlers.delete(wordCardEl);
       }
     });
   }
