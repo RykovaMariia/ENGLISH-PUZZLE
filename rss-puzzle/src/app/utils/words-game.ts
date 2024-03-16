@@ -45,6 +45,14 @@ export function getWords(gameProps: GameProps) {
   return null;
 }
 
+export function getRussianSentence(gameProps: GameProps) {
+  const wordCollection = getWordCollection(gameProps.level);
+  if (wordCollection) {
+    return wordCollection?.rounds[gameProps.round].words[gameProps.sentence].textExampleTranslate;
+  }
+  return null;
+}
+
 export function getShuffledWords<T>(array: T[]) {
   const result = array.slice();
   for (let i = result.length - 1; i > 0; i -= 1) {

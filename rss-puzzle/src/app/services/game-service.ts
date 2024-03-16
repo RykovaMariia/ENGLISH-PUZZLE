@@ -1,8 +1,8 @@
-import { getWords } from '../utils/words-game';
+import { getRussianSentence, getWords } from '../utils/words-game';
 
 const INITIAL_LEVEL = 1;
 const INITIAL_ROUND = 0;
-const INITIAL_SENTENCE = 9;
+const INITIAL_SENTENCE = 1;
 
 class GameService {
   private level = INITIAL_LEVEL;
@@ -17,6 +17,10 @@ class GameService {
       round: this.round,
       sentence: this.sentence,
     };
+  }
+
+  getRussianSentence() {
+    return getRussianSentence(this.getGameProps());
   }
 
   getWords() {

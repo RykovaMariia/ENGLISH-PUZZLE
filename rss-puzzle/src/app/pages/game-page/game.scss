@@ -105,3 +105,21 @@
   width: 200px;
   user-select: none;
 }
+
+.hints {
+  width: 800px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
+
+.translation-hint {
+  width: max-content;
+  background-color: constants.$color-background-body-light;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}

@@ -5,8 +5,11 @@ import { SourceSection } from './source-section/source-section';
 import { Button } from '../../components/button/button';
 import { gameService } from '../../services/game-service';
 import { GameProps } from '../../interfaces/game-props';
+import { Hints } from './hints-section/hints';
 
 export class Game extends BaseElement {
+  private hints: BaseElement | undefined;
+
   private resultSection: ResultSection | undefined;
 
   private sourceSection: SourceSection | undefined;
@@ -31,16 +34,18 @@ export class Game extends BaseElement {
   }
 
   removeGame() {
+    this.hints?.destroy();
     this.resultSection?.destroy();
     this.sourceSection?.destroy();
     this.buttons?.destroy();
   }
 
   drawGame(gameProps: GameProps, words: string[] | null) {
+    this.hints = new Hints();
     this.resultSection = new ResultSection(gameProps);
     this.sourceSection = new SourceSection(words);
     this.buttons = this.getButtons(gameProps);
-    this.insertChildren([this.resultSection, this.sourceSection, this.buttons]);
+    this.insertChildren([this.hints, this.resultSection, this.sourceSection, this.buttons]);
   }
 
   getButtons(gameProps: GameProps) {

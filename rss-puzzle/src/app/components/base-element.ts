@@ -1,7 +1,7 @@
 interface BaseElementProps {
   tagName: string;
   classNames?: string | string[];
-  textContent?: string;
+  textContent?: string | null;
   parentNode?: HTMLElement;
   attribute?: AttributeElement;
 }
@@ -44,10 +44,12 @@ export class BaseElement<T extends HTMLElement = HTMLElement> {
     this.element.classList.remove(className);
   }
 
+  getTextContent() {
+    return this.element.innerText;
+  }
+
   setTextContent(text: string) {
-    if (text) {
-      this.element.innerText = text;
-    }
+    this.element.innerText = text;
   }
 
   insertChild(child: HTMLElement): void {
