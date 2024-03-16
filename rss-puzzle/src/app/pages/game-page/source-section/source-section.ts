@@ -1,5 +1,5 @@
 import { BaseElement } from '../../../components/base-element';
-import { getShuffledWords } from '../../../utils/words-game';
+import { getLengthChar, getShuffledWords } from '../../../utils/words-game';
 
 export class SourceSection extends BaseElement {
   private wordElements: BaseElement[] | undefined;
@@ -10,9 +10,22 @@ export class SourceSection extends BaseElement {
       classNames: 'source-data',
     });
 
-    this.wordElements = words?.map(
-      (el) => new BaseElement({ tagName: 'div', classNames: 'word', textContent: el }),
-    );
+    this.wordElements = words?.map((el, i) => {
+      const word = new BaseElement({ tagName: 'div', classNames: 'word' });
+      const spatLeft = new BaseElement({ tagName: 'span', classNames: 'left' });
+      const spatText = new BaseElement({ tagName: 'span', classNames: 'text', textContent: el });
+      const spatRight = new BaseElement({ tagName: 'span', classNames: 'right' });
+
+      if (i === 0) {
+        word.insertChildren([spatText, spatRight]);
+      } else if (i === words.length - 1) {
+        word.insertChildren([spatLeft, spatText]);
+      } else {
+        word.insertChildren([spatLeft, spatText, spatRight]);
+      }
+      word.setStyleWidth(el.length * getLengthChar(words || []));
+      return word;
+    });
     this.insertChildren(getShuffledWords<BaseElement>(this.wordElements ?? []));
   }
 

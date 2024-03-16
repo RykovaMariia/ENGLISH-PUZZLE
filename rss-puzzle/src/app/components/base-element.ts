@@ -71,4 +71,8 @@ export class BaseElement<T extends HTMLElement = HTMLElement> {
   destroy() {
     this.element.remove();
   }
+
+  setStyleWidth(width: number | string) {
+    this.element.style.width = `${width}px`;
+  }
 }

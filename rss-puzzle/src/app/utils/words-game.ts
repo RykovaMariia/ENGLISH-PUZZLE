@@ -7,6 +7,8 @@ import { wordCollectionLevel6 } from '../data/wordCollectionLevel6';
 import { GameProps } from '../interfaces/game-props';
 import { WordCollection } from '../interfaces/words';
 
+const WIDTH_CONTAINER = 800;
+
 function getWordCollection(level: number) {
   let wordCollection: WordCollection | null;
 
@@ -50,4 +52,14 @@ export function getShuffledWords<T>(array: T[]) {
     [result[i], result[j]] = [result[j], result[i]];
   }
   return result;
+}
+
+export function getLengthChar(words: string[]) {
+  const countCharInSentence = words?.join('').length;
+  return WIDTH_CONTAINER / countCharInSentence;
+}
+
+export function getLengthWord(words: string[]) {
+  const countCharInSentence = words?.length;
+  return WIDTH_CONTAINER / countCharInSentence;
 }

@@ -23,34 +23,62 @@
 
 .source-data {
   display: flex;
-  width: 800px;
-  justify-content: center;
+  width: 1000px;
+  height: 55px;
+  justify-content: space-between;
   align-items: center;
+  gap: 10px;
   padding: 10px;
   border: solid 1px constants.$color-text-dark;
 }
 
 .word {
+  position: relative;
+  margin-right: 1px;
   box-sizing: border-box;
   cursor: pointer;
   user-select: none;
-  flex-grow: 1;
-  padding: 5px;
-  border: solid 2px constants.$color-text-dark;
   text-align: center;
   height: 35px;
 
-  &:hover,
-  :active {
-    border: solid 2px constants.$color-button;
+  span {
+    background-color: constants.$color-text-grey;
   }
-}
 
-.word_inactive {
-  &:hover,
-  :active {
-    cursor: auto;
-    border: solid 2px constants.$color-text-dark;
+  .text {
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    color: constants.$color-text-dark;
+    border-radius: 2px;
+    height: 100%;
+    padding: 5px 0;
+    padding-left: 6px;
+    font-size: 1.7rem;
+  }
+
+  .left {
+    z-index: 10;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    transform: translateX(75%) translateY(-50%);
+    border-radius: 100%;
+    background-color: constants.$color-background-body-light;
+  }
+
+  .right {
+    z-index: 100;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    transform: translateX(-35%) translateY(-50%);
+    border-radius: 100%;
+    box-shadow: 1px 0 1px #fff;
   }
 }
 
@@ -67,13 +95,6 @@
   cursor: default;
   flex-grow: 1;
   padding: 5px;
-  border: solid 2px constants.$color-opacity;
-  color: constants.$color-opacity;
-
-  &:hover,
-  :active {
-    border: solid 2px constants.$color-opacity;
-  }
 }
 
 .button_hidden {

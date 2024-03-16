@@ -39,11 +39,11 @@ export class Game extends BaseElement {
   drawGame(gameProps: GameProps, words: string[] | null) {
     this.resultSection = new ResultSection(gameProps);
     this.sourceSection = new SourceSection(words);
-    this.buttons = this.getButtons();
+    this.buttons = this.getButtons(gameProps);
     this.insertChildren([this.resultSection, this.sourceSection, this.buttons]);
   }
 
-  getButtons() {
+  getButtons(gameProps: GameProps) {
     const divButtons = new BaseElement({
       tagName: 'div',
       classNames: 'buttons',
@@ -54,7 +54,7 @@ export class Game extends BaseElement {
         classNames: ['button', 'button_check'],
         textContent: 'CHECK',
       },
-      () => this.clickCheckButton(),
+      () => this.clickCheckButton(gameProps),
     );
 
     this.continueButton = new Button(
@@ -80,12 +80,13 @@ export class Game extends BaseElement {
     return divButtons;
   }
 
-  clickCheckButton() {
-    if (this.resultSection?.isCorrectedWordOrder()) {
+  clickCheckButton(gameProps: GameProps) {
+    if (this.resultSection?.isCorrectedWordOrder(gameProps)) {
       this.continueButton?.enableButton();
       this.addClickWordCardsHandler(false);
       this.continueButton?.removeClassName('button_hidden');
       this.checkButton?.setClassName('button_hidden');
+      this.autoCompleteButton?.setClassName('button_hidden');
     } else {
       this.resultSection?.selectedUncorrectedWordOrder();
     }

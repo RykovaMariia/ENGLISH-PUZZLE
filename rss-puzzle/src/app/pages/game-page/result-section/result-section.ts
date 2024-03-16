@@ -1,6 +1,6 @@
 import { BaseElement } from '../../../components/base-element';
 import { GameProps } from '../../../interfaces/game-props';
-import { getWords } from '../../../utils/words-game';
+import { getLengthChar, getWords } from '../../../utils/words-game';
 
 export class ResultSection extends BaseElement {
   private emptyElements: BaseElement[][] = [];
@@ -25,18 +25,30 @@ export class ResultSection extends BaseElement {
   }
 
   draw(level: number, round: number) {
-    for (let i = 0; i < 10; i += 1) {
+    for (let i = 0; i <= 9; i += 1) {
       const resultSentence = new BaseElement({
         tagName: 'div',
         classNames: 'result-sentence',
       });
 
-      const emptyElements = getWords({ level, round, sentence: i })?.map((el) => {
-        return new BaseElement({
-          tagName: 'div',
-          classNames: ['word', 'word_inactive'],
-          textContent: el,
-        });
+      const words = getWords({ level, round, sentence: i });
+      const emptyElements = words?.map((el) => {
+        let empty: BaseElement;
+        if (i >= this.sentence) {
+          empty = new BaseElement({
+            tagName: 'div',
+            classNames: ['empty'],
+          });
+        } else {
+          empty = new BaseElement({
+            tagName: 'div',
+            classNames: ['word'],
+            textContent: el,
+          });
+          empty.setStyleWidth(el.length * getLengthChar(words || []));
+        }
+
+        return empty;
       });
 
       if (i >= this.sentence) {
@@ -69,9 +81,15 @@ export class ResultSection extends BaseElement {
     return this.currentSentence.getChildren().every((el) => !this.emptyHtmlElement.includes(el));
   }
 
-  isCorrectedWordOrder() {
+  isCorrectedWordOrder(gameProps: GameProps) {
     return this.currentSentence.getChildren().every((el, i) => {
-      return el.textContent === this.emptyHtmlElement[i].innerText;
+      const correctedWord = getWords({
+        level: gameProps.level,
+        round: gameProps.round,
+        sentence: gameProps.sentence,
+      });
+
+      return correctedWord && el.textContent === correctedWord[i];
     });
   }
 
