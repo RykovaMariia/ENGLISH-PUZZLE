@@ -1,28 +1,20 @@
 import './game.scss';
-import { BaseElement } from '../../components/base-element';
+import { BaseComponent } from '../../components/base-component';
 import { ResultSection } from './result-section/result-section';
 import { SourceSection } from './source-section/source-section';
-import { Button } from '../../components/button/button';
 import { gameService } from '../../services/game-service';
 import { GameProps } from '../../interfaces/game-props';
 import { Hints } from './hints-section/hints';
+import { ButtonSection } from './buttons-section/buttons-section';
 
-export class Game extends BaseElement {
-  private hints: BaseElement | undefined;
+export class Game extends BaseComponent {
+  private hints: BaseComponent | undefined;
 
   private resultSection: ResultSection | undefined;
 
   private sourceSection: SourceSection | undefined;
 
-  private checkButton: Button | undefined;
-
-  private continueButton: Button | undefined;
-
-  private autoCompleteButton: Button | undefined;
-
-  private buttons: BaseElement | undefined;
-
-  private handlers: Map<Element, () => void> = new Map();
+  private buttons: ButtonSection | undefined;
 
   constructor() {
     super({
@@ -40,58 +32,23 @@ export class Game extends BaseElement {
     this.buttons?.destroy();
   }
 
-  drawGame(gameProps: GameProps, words: string[] | null) {
+  drawGame(gameProps: GameProps, words: string[] | undefined) {
     this.hints = new Hints();
     this.resultSection = new ResultSection(gameProps);
-    this.sourceSection = new SourceSection(words);
-    this.buttons = this.getButtons(gameProps);
-    this.insertChildren([this.hints, this.resultSection, this.sourceSection, this.buttons]);
-  }
-
-  getButtons(gameProps: GameProps) {
-    const divButtons = new BaseElement({
-      tagName: 'div',
-      classNames: 'buttons',
+    this.sourceSection = new SourceSection(words || [], gameProps);
+    this.buttons = new ButtonSection({
+      clickCheckButton: () => this.clickCheckButton(gameProps),
+      clickContinueButton: () => this.clickContinueButton(),
+      clickAutoComplete: () => this.clickAutoComplete(gameProps.sentence),
     });
-
-    this.checkButton = new Button(
-      {
-        classNames: ['button', 'button_check'],
-        textContent: 'CHECK',
-      },
-      () => this.clickCheckButton(gameProps),
-    );
-
-    this.continueButton = new Button(
-      {
-        classNames: ['button', 'continue', 'button_hidden'],
-        textContent: 'CONTINUE',
-      },
-      () => this.clickContinueButton(),
-    );
-
-    this.autoCompleteButton = new Button(
-      {
-        classNames: ['button', 'button_auto-complete'],
-        textContent: `don't know`,
-      },
-      () => this.clickAutoComplete(),
-    );
-
-    this.addClickWordCardsHandler(true);
-    this.checkButton.disableButton();
-    this.continueButton.disableButton();
-    divButtons.insertChildren([this.autoCompleteButton, this.checkButton, this.continueButton]);
-    return divButtons;
+    this.addClickWordCardsHandler(true, gameProps.sentence);
+    this.insertChildren([this.hints, this.resultSection, this.sourceSection, this.buttons]);
   }
 
   clickCheckButton(gameProps: GameProps) {
     if (this.resultSection?.isCorrectedWordOrder(gameProps)) {
-      this.continueButton?.enableButton();
-      this.addClickWordCardsHandler(false);
-      this.continueButton?.removeClassName('button_hidden');
-      this.checkButton?.setClassName('button_hidden');
-      this.autoCompleteButton?.setClassName('button_hidden');
+      this.addClickWordCardsHandler(false, gameProps.sentence);
+      this.buttons?.setCorrectOrderButtonState();
     } else {
       this.resultSection?.selectedUncorrectedWordOrder();
     }
@@ -103,62 +60,40 @@ export class Game extends BaseElement {
     this.drawGame(gameService.getGameProps(), gameService.getWords());
   }
 
-  clickAutoComplete() {
+  clickAutoComplete(sentence: number) {
     this.sourceSection?.getSourceWordElements()?.forEach((el) => {
-      this.resultSection?.addEmptyInResult(el.getElement());
-
-      const existingHandler = this.handlers.get(el.getElement());
-      if (existingHandler) {
-        el.getElement().removeEventListener('click', existingHandler);
-        this.handlers.delete(el.getElement());
-      }
+      this.resultSection?.addEmptyInResult(el, sentence);
+      el.setOnclick(null);
     });
 
-    this.resultSection?.getResultEmptyElements().forEach((el) => {
+    this.resultSection?.getResultEmptyElements(sentence).forEach((el) => {
       this.sourceSection?.addWordInSource(el.getElement());
     });
 
-    this.autoCompleteButton?.destroy();
-    this.checkButton?.destroy();
-    this.continueButton?.enableButton();
-    this.continueButton?.removeClassName('button_hidden');
+    this.buttons?.setAutoCompleteButtonState();
   }
 
-  addClickWordCardsHandler(isAdd: boolean) {
+  addClickWordCardsHandler(isAdd: boolean, sentence: number) {
     this.sourceSection?.getSourceWordElements()?.forEach((el, i) => {
-      const wordCardEl = el.getElement();
-      const emptyEl = this.resultSection?.getResultEmptyElements()[i].getElement();
+      const emptyEl = this.resultSection?.getResultEmptyElements(sentence)[i];
       if (!emptyEl) return;
-      const handler = () => this.clickWordCardsHandler(wordCardEl, emptyEl);
       if (isAdd) {
-        if (this.handlers.has(wordCardEl)) {
-          return;
-        }
-        this.handlers.set(wordCardEl, handler);
-        wordCardEl.addEventListener('click', handler);
-        return;
-      }
-      const existingHandler = this.handlers.get(wordCardEl);
-      if (existingHandler) {
-        wordCardEl.removeEventListener('click', existingHandler);
-        this.handlers.delete(wordCardEl);
+        el.setOnclick(() => this.clickWordCardsHandler(el.getElement(), emptyEl, sentence));
+      } else {
+        el.setOnclick(null);
       }
     });
   }
 
-  clickWordCardsHandler(wordCardEl: HTMLElement, emptyEl: HTMLElement) {
-    this.resultSection?.deleteSelected();
+  clickWordCardsHandler = (wordCardEl: HTMLElement, emptyEl: BaseComponent, sentence: number) => {
+    this.resultSection?.deleteSelected(sentence);
     if (this.sourceSection?.getElement().contains(wordCardEl)) {
       this.resultSection?.addWordInResult(wordCardEl);
       this.sourceSection.insertChild(emptyEl);
     } else {
       this.sourceSection?.addWordInSource(wordCardEl);
-      this.resultSection?.addEmptyInResult(emptyEl);
+      this.resultSection?.addEmptyInResult(emptyEl, sentence);
     }
-    if (this.resultSection?.canClickCheck()) {
-      this.checkButton?.enableButton();
-    } else {
-      this.checkButton?.disableButton();
-    }
-  }
+    this.buttons?.setCheckButtonDisability(!!this.resultSection?.canClickCheck());
+  };
 }

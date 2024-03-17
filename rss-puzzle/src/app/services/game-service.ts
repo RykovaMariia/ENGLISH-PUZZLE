@@ -1,8 +1,8 @@
 import { getRussianSentence, getWords } from '../utils/words-game';
 
 const INITIAL_LEVEL = 1;
-const INITIAL_ROUND = 0;
-const INITIAL_SENTENCE = 1;
+const INITIAL_ROUND = 5;
+const INITIAL_SENTENCE = 9;
 
 class GameService {
   private level = INITIAL_LEVEL;

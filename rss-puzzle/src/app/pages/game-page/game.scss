@@ -14,11 +14,14 @@
   @include mixins.animate(main, 0.5s, ease, forwards);
 }
 
+.result {
+  border: solid 1px constants.$color-text-dark;
+}
+
 .result-sentence {
   height: 35px;
   width: 800px;
   display: flex;
-  border: solid 1px constants.$color-text-dark;
 }
 
 .source-data {
@@ -34,8 +37,6 @@
 
 .word {
   position: relative;
-  margin-right: 1px;
-  box-sizing: border-box;
   cursor: pointer;
   user-select: none;
   text-align: center;
@@ -49,12 +50,16 @@
     box-sizing: border-box;
     position: relative;
     display: block;
-    color: constants.$color-text-dark;
+    color: constants.$color-text-grey;
+    text-shadow: 0 0 3px constants.$color-text-dark;
     border-radius: 2px;
     height: 100%;
     padding: 5px 0;
     padding-left: 6px;
     font-size: 1.7rem;
+    box-shadow: 0 0 3px constants.$color-background-body-light;
+    background-size: 800px 350px;
+    background-repeat: no-repeat;
   }
 
   .left {
@@ -78,7 +83,8 @@
     left: 100%;
     transform: translateX(-35%) translateY(-50%);
     border-radius: 100%;
-    box-shadow: 1px 0 1px #fff;
+    box-shadow: 1px 0 1px constants.$color-background-body-light;
+    background-size: 800px 350px;
   }
 }
 
@@ -104,22 +110,4 @@
 .button_auto-complete {
   width: 200px;
   user-select: none;
-}
-
-.hints {
-  width: 800px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: row;
-}
-
-.translation-hint {
-  width: max-content;
-  background-color: constants.$color-background-body-light;
-  padding: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
 }

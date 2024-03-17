@@ -1,6 +1,6 @@
-import { BaseElement } from '../components/base-element';
+import { BaseComponent } from '../components/base-component';
 
 export interface Route {
   path: string;
-  component: () => Promise<BaseElement>;
+  component: () => Promise<BaseComponent>;
 }

@@ -1,11 +1,11 @@
 import './login.scss';
 
 import { Form } from './form/form';
-import { BaseElement } from '../../components/base-element';
+import { BaseComponent } from '../../components/base-component';
 import { IRouter } from '../../interfaces/router';
 
-export class Login extends BaseElement {
-  private headingPuzzle = new BaseElement({
+export class Login extends BaseComponent {
+  private headingPuzzle = new BaseComponent({
     tagName: 'h1',
     classNames: 'heading',
     textContent: 'ENGLISH PUZZLE',

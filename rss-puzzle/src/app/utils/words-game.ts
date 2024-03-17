@@ -10,7 +10,7 @@ import { WordCollection } from '../interfaces/words';
 const WIDTH_CONTAINER = 800;
 
 function getWordCollection(level: number) {
-  let wordCollection: WordCollection | null;
+  let wordCollection: WordCollection | undefined;
 
   switch (level) {
     case 1:
@@ -32,7 +32,7 @@ function getWordCollection(level: number) {
       wordCollection = wordCollectionLevel6;
       break;
     default:
-      wordCollection = null;
+      wordCollection = undefined;
   }
   return wordCollection;
 }
@@ -42,7 +42,7 @@ export function getWords(gameProps: GameProps) {
   if (wordCollection) {
     return wordCollection?.rounds[gameProps.round].words[gameProps.sentence].textExample.split(' ');
   }
-  return null;
+  return undefined;
 }
 
 export function getRussianSentence(gameProps: GameProps) {
@@ -50,7 +50,7 @@ export function getRussianSentence(gameProps: GameProps) {
   if (wordCollection) {
     return wordCollection?.rounds[gameProps.round].words[gameProps.sentence].textExampleTranslate;
   }
-  return null;
+  return undefined;
 }
 
 export function getShuffledWords<T>(array: T[]) {
@@ -71,3 +71,20 @@ export function getLengthWord(words: string[]) {
   const countCharInSentence = words?.length;
   return WIDTH_CONTAINER / countCharInSentence;
 }
+
+export function getImage(level: number, round: number) {
+  const wordCollection = getWordCollection(level);
+  if (wordCollection) {
+    return wordCollection?.rounds[round].levelData.imageSrc;
+  }
+  return undefined;
+}
+
+// export function addBackground(
+//   span: BaseComponent,
+//   urlImg: string | undefined,
+//   lengthCount: number,
+//   y: number,
+// ) {
+//   span.setBackgroundImg(`../../../../assets/${urlImg}`, `${-lengthCount}px ${y}%`);
+// }

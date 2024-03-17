@@ -1,10 +1,10 @@
-import { BaseElement } from '../../components/base-element';
-import { Button } from '../../components/button/button';
+import { BaseComponent } from '../../components/base-component';
+import { ButtonComponent } from '../../components/button/button-component';
 import { AppRoute } from '../../enums/app-route';
 import { IRouter } from '../../interfaces/router';
 
-export class NotFound extends BaseElement {
-  private headingPuzzle = new BaseElement({
+export class NotFound extends BaseComponent {
+  private headingPuzzle = new BaseComponent({
     tagName: 'h1',
     classNames: 'heading',
     textContent: 'ERROR\n This page is not found',
@@ -16,7 +16,7 @@ export class NotFound extends BaseElement {
       classNames: 'not-found',
     });
     this.insertChildren([this.headingPuzzle]);
-    const submitButton = new Button(
+    const submitButton = new ButtonComponent(
       {
         textContent: 'Login',
         classNames: 'button',

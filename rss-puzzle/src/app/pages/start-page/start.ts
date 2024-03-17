@@ -1,12 +1,12 @@
 import './start.scss';
 
-import { BaseElement } from '../../components/base-element';
+import { BaseComponent } from '../../components/base-component';
 import { localStorageService } from '../../services/storage-service';
 import { IRouter } from '../../interfaces/router';
 import { AppRoute } from '../../enums/app-route';
-import { Button } from '../../components/button/button';
+import { ButtonComponent } from '../../components/button/button-component';
 
-export class Start extends BaseElement {
+export class Start extends BaseComponent {
   constructor(private router: IRouter) {
     super({
       tagName: 'main',
@@ -19,16 +19,16 @@ export class Start extends BaseElement {
   }
 
   drawPersonalizedGreeting() {
-    const sectionPersonalizedGreeting = new BaseElement({
+    const sectionPersonalizedGreeting = new BaseComponent({
       tagName: 'section',
       classNames: 'personalized-greeting',
     });
-    const welcome = new BaseElement({
+    const welcome = new BaseComponent({
       tagName: 'h1',
       classNames: 'personalized-greeting__heading',
       textContent: 'WELCOME',
     });
-    const userName = new BaseElement({
+    const userName = new BaseComponent({
       tagName: 'h2',
       classNames: 'personalizedGreeting__user-name',
       textContent: `${localStorageService.getData('userFullName')?.firstName ?? ' '} ${localStorageService.getData('userFullName')?.surname ?? ' '}`,
@@ -38,7 +38,7 @@ export class Start extends BaseElement {
   }
 
   drawStartButton() {
-    const startButton = new Button(
+    const startButton = new ButtonComponent(
       {
         textContent: 'Start',
         classNames: 'button__start',
@@ -50,16 +50,16 @@ export class Start extends BaseElement {
   }
 
   drawGameDescription() {
-    const sectionGameDescription = new BaseElement({
+    const sectionGameDescription = new BaseComponent({
       tagName: 'section',
       classNames: 'game-description',
     });
-    const headingPuzzle = new BaseElement({
+    const headingPuzzle = new BaseComponent({
       tagName: 'h2',
       classNames: 'name',
       textContent: 'ENGLISH PUZZLE',
     });
-    const description = new BaseElement({
+    const description = new BaseComponent({
       tagName: 'p',
       classNames: 'description',
       textContent:

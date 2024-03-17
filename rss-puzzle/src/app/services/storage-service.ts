@@ -32,6 +32,7 @@ class StorageService<T> {
 
 export type LocalStorageState = {
   userFullName: UserFullName;
+  puzzleHint: boolean;
 };
 
 interface UserFullName {

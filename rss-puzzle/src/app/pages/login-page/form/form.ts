@@ -1,15 +1,15 @@
 import './form.scss';
-import { Button } from '../../../components/button/button';
-import { Input } from '../../../components/input/input';
+import { ButtonComponent } from '../../../components/button/button-component';
+import { InputComponent } from '../../../components/input/input-component';
 import { localStorageService } from '../../../services/storage-service';
-import { BaseElement } from '../../../components/base-element';
+import { BaseComponent } from '../../../components/base-component';
 import { AppRoute } from '../../../enums/app-route';
 import { IRouter } from '../../../interfaces/router';
 
 const FIELD_NAME = ['First Name', 'Surname'];
 const ID = ['firstName', 'surname'];
 const REG_VALID = '(^[A-Z]{1})+[A-Za-z\\-]+$';
-function getError(input: Input, fieldName: string, countCharacter: number) {
+function getError(input: InputComponent, fieldName: string, countCharacter: number) {
   input.removeClassName('input_empty');
   if (input.isValid()) {
     return ' ';
@@ -27,10 +27,10 @@ function getError(input: Input, fieldName: string, countCharacter: number) {
   return `I don't know`;
 }
 
-export class Form extends BaseElement<HTMLFormElement> {
-  private inputFields: Input[] = [];
+export class Form extends BaseComponent<HTMLFormElement> {
+  private inputFields: InputComponent[] = [];
 
-  private spanElements: BaseElement[] = [];
+  private spanElements: BaseComponent[] = [];
 
   constructor(private router: IRouter) {
     super({
@@ -43,7 +43,7 @@ export class Form extends BaseElement<HTMLFormElement> {
   }
 
   drawHeading() {
-    const heading = new BaseElement({
+    const heading = new BaseComponent({
       tagName: 'h2',
       classNames: 'login__heading',
       textContent: 'LOGIN',
@@ -53,17 +53,20 @@ export class Form extends BaseElement<HTMLFormElement> {
 
   drawInputFields() {
     const inputs = FIELD_NAME.map((el, i) => {
-      const div = new BaseElement({ tagName: 'div', classNames: 'input' });
-      const label = new BaseElement({
+      const div = new BaseComponent({ tagName: 'div', classNames: 'input' });
+      const label = new BaseComponent({
         tagName: 'label',
         classNames: 'input__label',
         textContent: el,
         attribute: { name: 'for', value: ID[i] },
       });
-      const spanError = new BaseElement({ tagName: 'span', classNames: 'error' });
+      const spanError = new BaseComponent({ tagName: 'span', classNames: 'error' });
       this.spanElements.push(spanError);
 
-      const input = new Input({ classNames: ['input__field', 'input_empty'] }, { id: ID[i] });
+      const input = new InputComponent(
+        { classNames: ['input__field', 'input_empty'] },
+        { id: ID[i] },
+      );
 
       this.inputFields.push(input);
       input.setValidation({ isRequired: true, patternValue: REG_VALID, minlengthValue: i + 3 });
@@ -79,7 +82,7 @@ export class Form extends BaseElement<HTMLFormElement> {
   }
 
   drawSubmitButton() {
-    const submitButton = new Button(
+    const submitButton = new ButtonComponent(
       {
         attribute: { name: 'type', value: 'submit' },
         textContent: 'Login',

@@ -4,6 +4,7 @@ import merge from 'webpack-merge';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import CopyPlugin from 'copy-webpack-plugin';
 
 const baseConfig: webpack.Configuration = {
   mode: 'development',
@@ -11,6 +12,7 @@ const baseConfig: webpack.Configuration = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[contenthash].js',
+    assetModuleFilename: 'assets/[hash][ext][query]',
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -18,6 +20,14 @@ const baseConfig: webpack.Configuration = {
     }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin(),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, 'src', 'assets'),
+          to: path.resolve(__dirname, 'dist', 'assets'),
+        },
+      ],
+    }),
   ],
   module: {
     rules: [
@@ -26,6 +36,10 @@ const baseConfig: webpack.Configuration = {
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
       },
       { test: /\.ts$/i, use: 'ts-loader' },
+      {
+        test: /\.(png|jpg|gif)$/i,
+        type: 'asset/resource',
+      },
     ],
   },
   resolve: {

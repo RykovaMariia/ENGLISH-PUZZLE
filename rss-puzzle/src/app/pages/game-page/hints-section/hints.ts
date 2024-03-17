@@ -1,8 +1,9 @@
-import { BaseElement } from '../../../components/base-element';
-import { Button } from '../../../components/button/button';
+import './hints.scss';
+import { BaseComponent } from '../../../components/base-component';
+import { ButtonComponent } from '../../../components/button/button-component';
 import { gameService } from '../../../services/game-service';
 
-export class Hints extends BaseElement {
+export class Hints extends BaseComponent {
   constructor() {
     super({
       tagName: 'section',
@@ -12,12 +13,12 @@ export class Hints extends BaseElement {
   }
 
   drawTranslationHint() {
-    const translationHintField = new BaseElement({
+    const translationHintField = new BaseComponent({
       tagName: 'span',
       classNames: 'translation-field',
     });
 
-    const translationHint = new Button(
+    const translationHint = new ButtonComponent(
       {
         classNames: ['translation-hint'],
       },
@@ -30,7 +31,7 @@ export class Hints extends BaseElement {
       },
     );
 
-    const translationIcon = new BaseElement({
+    const translationIcon = new BaseComponent({
       tagName: 'span',
       classNames: 'material-symbols-outlined',
       textContent: 'lightbulb',

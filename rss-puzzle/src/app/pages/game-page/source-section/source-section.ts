@@ -1,32 +1,43 @@
-import { BaseElement } from '../../../components/base-element';
-import { getLengthChar, getShuffledWords } from '../../../utils/words-game';
+import { BaseComponent } from '../../../components/base-component';
+import { WordComponent } from '../../../components/word/word-component';
+import { GameProps } from '../../../interfaces/game-props';
+import { localStorageService } from '../../../services/storage-service';
+import { getImage, getLengthChar, getShuffledWords } from '../../../utils/words-game';
 
-export class SourceSection extends BaseElement {
-  private wordElements: BaseElement[] | undefined;
+export class SourceSection extends BaseComponent {
+  private wordElements: BaseComponent[] | undefined;
 
-  constructor(words: string[] | null) {
+  constructor(words: string[] | null, gameProps: GameProps) {
     super({
       tagName: 'section',
       classNames: 'source-data',
     });
+    if (words) this.drawPuzzle(words, gameProps);
+  }
 
-    this.wordElements = words?.map((el, i) => {
-      const word = new BaseElement({ tagName: 'div', classNames: 'word' });
-      const spatLeft = new BaseElement({ tagName: 'span', classNames: 'left' });
-      const spatText = new BaseElement({ tagName: 'span', classNames: 'text', textContent: el });
-      const spatRight = new BaseElement({ tagName: 'span', classNames: 'right' });
+  drawPuzzle(words: string[], gameProps: GameProps) {
+    let lengthCount = 0;
+    const urlImg = getImage(gameProps.level, gameProps.round);
 
-      if (i === 0) {
-        word.insertChildren([spatText, spatRight]);
-      } else if (i === words.length - 1) {
-        word.insertChildren([spatLeft, spatText]);
-      } else {
-        word.insertChildren([spatLeft, spatText, spatRight]);
+    this.wordElements = words.map((el, i) => {
+      const wordCard = new WordComponent(
+        { classNames: 'word' },
+        { isEmpty: false, textContent: el, isFirst: i === 0, isLast: i === words.length - 1 },
+      );
+
+      const lengthWord = el.length * getLengthChar(words || []);
+      wordCard.setStyleWidth(lengthWord);
+
+      if (localStorageService.getData('puzzleHint')) {
+        const y = gameProps.sentence * 10;
+        wordCard.setBackgroundImgForSpanText(urlImg, lengthCount, y);
+        lengthCount += lengthWord;
+        wordCard.setBackgroundImgForSpanRight(urlImg, lengthCount - 6, y);
       }
-      word.setStyleWidth(el.length * getLengthChar(words || []));
-      return word;
+
+      return wordCard;
     });
-    this.insertChildren(getShuffledWords<BaseElement>(this.wordElements ?? []));
+    this.insertChildren(getShuffledWords<BaseComponent>(this.wordElements ?? []));
   }
 
   getSourceWordElements() {

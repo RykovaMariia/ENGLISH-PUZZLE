@@ -1,15 +1,14 @@
-import { BaseElement } from '../../../components/base-element';
+import { BaseComponent } from '../../../components/base-component';
+import { WordComponent } from '../../../components/word/word-component';
 import { GameProps } from '../../../interfaces/game-props';
-import { getLengthChar, getWords } from '../../../utils/words-game';
+import { getImage, getLengthChar, getWords } from '../../../utils/words-game';
 
-export class ResultSection extends BaseElement {
-  private emptyElements: BaseElement[][] = [];
+export class ResultSection extends BaseComponent {
+  private emptyElements: BaseComponent[][] = [];
 
-  private resultSentences: BaseElement[] = [];
+  private resultSentences: BaseComponent[] = [];
 
-  private sentence: number;
-
-  private currentSentence: BaseElement;
+  private currentSentence: BaseComponent;
 
   private emptyHtmlElement: HTMLElement[];
 
@@ -18,40 +17,45 @@ export class ResultSection extends BaseElement {
       tagName: 'section',
       classNames: 'result',
     });
-    this.sentence = gameProps.sentence;
-    this.draw(gameProps.level, gameProps.round);
-    this.currentSentence = this.resultSentences[this.sentence];
-    this.emptyHtmlElement = this.emptyElements[this.sentence].map((el) => el.getElement());
+    this.drawResultSection(gameProps);
+    this.currentSentence = this.resultSentences[gameProps.sentence];
+    this.emptyHtmlElement = this.emptyElements[gameProps.sentence].map((el) => el.getElement());
   }
 
-  draw(level: number, round: number) {
+  drawResultSection(gameProps: GameProps) {
     for (let i = 0; i <= 9; i += 1) {
-      const resultSentence = new BaseElement({
+      const resultSentence = new BaseComponent({
         tagName: 'div',
         classNames: 'result-sentence',
       });
 
-      const words = getWords({ level, round, sentence: i });
-      const emptyElements = words?.map((el) => {
-        let empty: BaseElement;
-        if (i >= this.sentence) {
-          empty = new BaseElement({
-            tagName: 'div',
-            classNames: ['empty'],
-          });
+      const words = getWords({ level: gameProps.level, round: gameProps.round, sentence: i });
+      let lengthCount = 0;
+      const urlImg = getImage(gameProps.level, gameProps.round);
+
+      const emptyElements = words?.map((el, j) => {
+        let empty: WordComponent;
+        if (i >= gameProps.sentence) {
+          empty = new WordComponent({ classNames: 'empty' }, { isEmpty: true });
         } else {
-          empty = new BaseElement({
-            tagName: 'div',
-            classNames: ['word'],
-            textContent: el,
-          });
-          empty.setStyleWidth(el.length * getLengthChar(words || []));
+          empty = new WordComponent(
+            { classNames: 'word' },
+            { isEmpty: false, textContent: el, isFirst: j === 0, isLast: j === words.length - 1 },
+          );
+
+          const lengthWord = el.length * getLengthChar(words || []);
+          empty.setStyleWidth(lengthWord);
+          const y = i * 10;
+
+          empty.setBackgroundImgForSpanText(urlImg, lengthCount, y);
+          lengthCount += lengthWord;
+          empty.setBackgroundImgForSpanRight(urlImg, lengthCount - 6, y);
         }
 
         return empty;
       });
 
-      if (i >= this.sentence) {
+      if (i >= gameProps.sentence) {
         emptyElements?.map((el) => el.setClassName('empty'));
       }
       this.emptyElements.push(emptyElements ?? []);
@@ -62,8 +66,8 @@ export class ResultSection extends BaseElement {
     }
   }
 
-  getResultEmptyElements() {
-    return this.emptyElements[this.sentence];
+  getResultEmptyElements(sentence: number) {
+    return this.emptyElements[sentence];
   }
 
   addWordInResult(wordElement: HTMLElement) {
@@ -73,8 +77,8 @@ export class ResultSection extends BaseElement {
       ?.before(wordElement);
   }
 
-  addEmptyInResult(emptyElements: HTMLElement) {
-    this.resultSentences[this.sentence].insertChild(emptyElements);
+  addEmptyInResult(emptyElements: BaseComponent, sentence: number) {
+    this.resultSentences[sentence].insertChild(emptyElements);
   }
 
   canClickCheck() {
@@ -103,8 +107,8 @@ export class ResultSection extends BaseElement {
     });
   }
 
-  deleteSelected() {
-    const currentElements = this.resultSentences[this.sentence].getElement().children;
+  deleteSelected(sentence: number) {
+    const currentElements = this.resultSentences[sentence].getElement().children;
     Array.from(currentElements).map((el) => {
       el.classList.remove('uncorrected');
       el.classList.remove('corrected');
