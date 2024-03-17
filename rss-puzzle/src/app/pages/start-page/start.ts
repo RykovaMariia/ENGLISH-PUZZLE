@@ -4,7 +4,7 @@ import { BaseComponent } from '../../components/base-component';
 import { localStorageService } from '../../services/storage-service';
 import { IRouter } from '../../interfaces/router';
 import { AppRoute } from '../../enums/app-route';
-import { ButtonComponent } from '../../components/button/button-component';
+import { Button } from '../../components/button/button-component';
 
 export class Start extends BaseComponent {
   constructor(private router: IRouter) {
@@ -38,7 +38,7 @@ export class Start extends BaseComponent {
   }
 
   drawStartButton() {
-    const startButton = new ButtonComponent(
+    const startButton = new Button(
       {
         textContent: 'Start',
         classNames: 'button__start',

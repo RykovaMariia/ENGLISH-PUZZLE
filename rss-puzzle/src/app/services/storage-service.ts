@@ -10,6 +10,11 @@ class StorageService<T> {
     localStorage.setItem(storageKey, JSON.stringify(data));
   }
 
+  removeData<K extends keyof T>(key: K): void {
+    const storageKey = this.getStorageKey(key.toString());
+    localStorage.removeItem(storageKey);
+  }
+
   getData<K extends keyof T>(key: K, validate?: (data: unknown) => data is T[K]): T[K] | null {
     const storageKey = this.getStorageKey(key.toString());
     const data = localStorage.getItem(storageKey);
@@ -28,11 +33,20 @@ class StorageService<T> {
       return null;
     }
   }
+
+  toggleData<K extends keyof T>(key: K, data: T[K]): void {
+    if (this.getData(key)) {
+      this.removeData(key);
+    } else {
+      this.saveData(key, data);
+    }
+  }
 }
 
 export type LocalStorageState = {
   userFullName: UserFullName;
-  puzzleHint: boolean;
+  translateHint: string;
+  puzzleHint: string;
 };
 
 interface UserFullName {

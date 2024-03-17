@@ -1,12 +1,12 @@
 import { BaseComponent } from '../../../components/base-component';
-import { ButtonComponent } from '../../../components/button/button-component';
+import { Button } from '../../../components/button/button-component';
 
 export class ButtonSection extends BaseComponent {
-  private checkButton: ButtonComponent;
+  private checkButton: Button;
 
-  private continueButton: ButtonComponent;
+  private continueButton: Button;
 
-  private autoCompleteButton: ButtonComponent;
+  private autoCompleteButton: Button;
 
   constructor({
     clickCheckButton,
@@ -19,7 +19,7 @@ export class ButtonSection extends BaseComponent {
   }) {
     super({ tagName: 'div', classNames: 'buttons' });
 
-    this.checkButton = new ButtonComponent(
+    this.checkButton = new Button(
       {
         classNames: ['button', 'button_check'],
         textContent: 'CHECK',
@@ -27,7 +27,7 @@ export class ButtonSection extends BaseComponent {
       clickCheckButton,
     );
 
-    this.continueButton = new ButtonComponent(
+    this.continueButton = new Button(
       {
         classNames: ['button', 'continue', 'button_hidden'],
         textContent: 'CONTINUE',
@@ -35,7 +35,7 @@ export class ButtonSection extends BaseComponent {
       clickContinueButton,
     );
 
-    this.autoCompleteButton = new ButtonComponent(
+    this.autoCompleteButton = new Button(
       {
         classNames: ['button', 'button_auto-complete'],
         textContent: `don't know`,

@@ -1,9 +1,14 @@
 import './hints.scss';
 import { BaseComponent } from '../../../components/base-component';
-import { ButtonComponent } from '../../../components/button/button-component';
+import { Button } from '../../../components/button/button-component';
 import { gameService } from '../../../services/game-service';
+import { localStorageService } from '../../../services/storage-service';
 
 export class Hints extends BaseComponent {
+  private translationHintField: BaseComponent | undefined;
+
+  private translationIcon: BaseComponent | undefined;
+
   constructor() {
     super({
       tagName: 'section',
@@ -13,32 +18,40 @@ export class Hints extends BaseComponent {
   }
 
   drawTranslationHint() {
-    const translationHintField = new BaseComponent({
+    this.translationHintField = new BaseComponent({
       tagName: 'span',
       classNames: 'translation-field',
     });
 
-    const translationHint = new ButtonComponent(
+    const translationHint = new Button(
       {
         classNames: ['translation-hint'],
       },
       () => {
-        if (translationHintField.getTextContent() === '') {
-          translationHintField.setTextContent(gameService.getRussianSentence() || '');
-        } else {
-          translationHintField.setTextContent('');
-        }
+        localStorageService.toggleData('translateHint', 'on');
+        this.setTranslateHintState();
       },
     );
 
-    const translationIcon = new BaseComponent({
+    this.translationIcon = new BaseComponent({
       tagName: 'span',
       classNames: 'material-symbols-outlined',
-      textContent: 'lightbulb',
     });
 
-    translationHint.insertChild(translationIcon.getElement());
+    this.setTranslateHintState();
 
-    this.insertChildren([translationHintField, translationHint]);
+    translationHint.insertChild(this.translationIcon.getElement());
+
+    this.insertChildren([this.translationHintField, translationHint]);
+  }
+
+  setTranslateHintState() {
+    if (localStorageService.getData('translateHint')) {
+      this.translationIcon?.setTextContent('lightbulb');
+      this.translationHintField?.setTextContent(gameService.getRussianSentence() || '');
+    } else {
+      this.translationIcon?.setTextContent('light_off');
+      this.translationHintField?.setTextContent('');
+    }
   }
 }

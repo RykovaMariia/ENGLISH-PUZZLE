@@ -1,5 +1,5 @@
 import './form.scss';
-import { ButtonComponent } from '../../../components/button/button-component';
+import { Button } from '../../../components/button/button-component';
 import { InputComponent } from '../../../components/input/input-component';
 import { localStorageService } from '../../../services/storage-service';
 import { BaseComponent } from '../../../components/base-component';
@@ -82,7 +82,7 @@ export class Form extends BaseComponent<HTMLFormElement> {
   }
 
   drawSubmitButton() {
-    const submitButton = new ButtonComponent(
+    const submitButton = new Button(
       {
         attribute: { name: 'type', value: 'submit' },
         textContent: 'Login',

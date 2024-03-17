@@ -2,7 +2,7 @@ import './button.scss';
 
 import { BaseComponent, TaggedElementProps } from '../base-component';
 
-export class ButtonComponent extends BaseComponent<HTMLButtonElement> {
+export class Button extends BaseComponent<HTMLButtonElement> {
   constructor(props: TaggedElementProps, cb?: (e: Event) => void) {
     super({ tagName: 'button', ...props });
     if (cb) this.setHandler(cb);

@@ -1,5 +1,5 @@
 import { BaseComponent } from '../../components/base-component';
-import { ButtonComponent } from '../../components/button/button-component';
+import { Button } from '../../components/button/button-component';
 import { AppRoute } from '../../enums/app-route';
 import { IRouter } from '../../interfaces/router';
 
@@ -16,7 +16,7 @@ export class NotFound extends BaseComponent {
       classNames: 'not-found',
     });
     this.insertChildren([this.headingPuzzle]);
-    const submitButton = new ButtonComponent(
+    const submitButton = new Button(
       {
         textContent: 'Login',
         classNames: 'button',
