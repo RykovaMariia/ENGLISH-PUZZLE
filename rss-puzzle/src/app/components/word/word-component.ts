@@ -1,3 +1,4 @@
+import './word.scss';
 import { BaseComponent, TaggedElementProps } from '../base-component';
 
 interface WordProps {

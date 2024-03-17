@@ -9,12 +9,15 @@ export class Hints extends BaseComponent {
 
   private translationIcon: BaseComponent | undefined;
 
-  constructor() {
+  private puzzleIcon: BaseComponent | undefined;
+
+  constructor(addBackgroundImg: () => void) {
     super({
       tagName: 'section',
       classNames: 'hints',
     });
     this.drawTranslationHint();
+    this.drawBackgroundImgHint(addBackgroundImg);
   }
 
   drawTranslationHint() {
@@ -25,7 +28,7 @@ export class Hints extends BaseComponent {
 
     const translationHint = new Button(
       {
-        classNames: ['translation-hint'],
+        classNames: ['hint'],
       },
       () => {
         localStorageService.toggleData('translateHint', 'on');
@@ -45,6 +48,30 @@ export class Hints extends BaseComponent {
     this.insertChildren([this.translationHintField, translationHint]);
   }
 
+  drawBackgroundImgHint(addBackgroundImg: () => void) {
+    const backgroundImgHint = new Button(
+      {
+        classNames: ['hint'],
+      },
+      () => {
+        localStorageService.toggleData('puzzleHint', 'on');
+        this.setBackgroundImgHintState();
+        addBackgroundImg();
+      },
+    );
+
+    this.puzzleIcon = new BaseComponent({
+      tagName: 'span',
+      classNames: 'material-symbols-outlined',
+    });
+
+    this.setBackgroundImgHintState();
+
+    backgroundImgHint.insertChild(this.puzzleIcon.getElement());
+
+    this.insertChildren([backgroundImgHint]);
+  }
+
   setTranslateHintState() {
     if (localStorageService.getData('translateHint')) {
       this.translationIcon?.setTextContent('lightbulb');
@@ -52,6 +79,14 @@ export class Hints extends BaseComponent {
     } else {
       this.translationIcon?.setTextContent('light_off');
       this.translationHintField?.setTextContent('');
+    }
+  }
+
+  setBackgroundImgHintState() {
+    if (localStorageService.getData('puzzleHint')) {
+      this.puzzleIcon?.setTextContent('extension');
+    } else {
+      this.puzzleIcon?.setTextContent('extension_off');
     }
   }
 }

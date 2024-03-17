@@ -3,12 +3,17 @@
 .hints {
   width: 800px;
   display: flex;
-  justify-content: space-between;
+  justify-content: end;
   align-items: center;
   flex-direction: row;
+  gap: 30px;
 }
 
-.translation-hint {
+.translation-field {
+  margin-right: 100px;
+}
+
+.hint {
   width: max-content;
   background-color: constants.$color-background-body-light;
   padding: 10px;
