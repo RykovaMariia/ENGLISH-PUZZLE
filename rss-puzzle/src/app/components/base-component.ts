@@ -85,7 +85,7 @@ export class BaseComponent<T extends HTMLElement = HTMLElement> {
   }
 
   setBackgroundImg(urlImg: string | undefined, lengthCount: number, y: number) {
-    this.element.style.backgroundImage = `url(../../../../assets/${urlImg})`;
+    this.element.style.backgroundImage = `url(./assets/img/${urlImg})`;
     this.element.style.backgroundPosition = `${-lengthCount}px ${y}%`;
   }
 }

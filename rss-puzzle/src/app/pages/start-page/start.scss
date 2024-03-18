@@ -96,6 +96,7 @@
   animation-delay: 2.3s;
 
   @include mixins.animate(main, 0.5s, ease, forwards);
+
   @include mixins.media-middle {
     width: 200px;
     font-size: 3rem;

@@ -3,6 +3,7 @@
 
 .heading {
   margin: auto;
+
   @include mixins.media-middle {
     font-size: 3rem;
   }
@@ -18,6 +19,7 @@
 
   @extend %animation-main;
   @include mixins.animate(main, 0.5s, ease, forwards);
+
   @include mixins.media-middle {
     margin-top: 7vh;
   }

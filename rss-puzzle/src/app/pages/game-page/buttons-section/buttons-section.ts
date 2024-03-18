@@ -1,3 +1,4 @@
+import './buttons.scss';
 import { BaseComponent } from '../../../components/base-component';
 import { Button } from '../../../components/button/button-component';
 

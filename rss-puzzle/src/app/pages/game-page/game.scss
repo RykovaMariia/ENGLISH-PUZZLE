@@ -9,10 +9,11 @@
   align-items: center;
   flex-direction: column;
   gap: 40px;
-  padding: 40px 40px;
+  padding: 40px;
 
   @extend %animation-main;
   @include mixins.animate(main, 0.5s, ease, forwards);
+
   @include mixins.media-middle {
     padding: 40px 20px;
     gap: 20px;
@@ -64,6 +65,7 @@
 .button_auto-complete {
   width: 200px;
   user-select: none;
+
   @include mixins.media-middle {
     width: 150px;
   }

@@ -35,7 +35,9 @@ export class Game extends BaseComponent {
   drawGame(gameProps: GameProps, words: string[] | undefined) {
     this.resultSection = new ResultSection(gameProps);
     this.sourceSection = new SourceSection(words || [], gameProps);
-    this.hints = new Hints(() => this.sourceSection?.addBackgroundImg(words || [], gameProps));
+    this.hints = new Hints(gameProps, () =>
+      this.sourceSection?.addBackgroundImg(words || [], gameProps),
+    );
     this.buttons = new ButtonSection({
       clickCheckButton: () => this.clickCheckButton(gameProps),
       clickContinueButton: () => this.clickContinueButton(),

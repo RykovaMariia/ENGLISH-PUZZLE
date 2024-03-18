@@ -15,12 +15,13 @@
 
   @include mixins.media-middle {
     width: 250px;
-    padding: 20px 20px;
+    padding: 20px;
   }
 }
 
 .login__heading {
   margin: auto;
+
   @include mixins.media-middle {
     font-size: 2.5rem;
   }

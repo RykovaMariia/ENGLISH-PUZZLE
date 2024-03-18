@@ -3,6 +3,8 @@ import { BaseComponent } from '../../../components/base-component';
 import { Button } from '../../../components/button/button-component';
 import { gameService } from '../../../services/game-service';
 import { localStorageService } from '../../../services/storage-service';
+import { GameProps } from '../../../interfaces/game-props';
+import { getSound } from '../../../utils/words-game';
 
 export class Hints extends BaseComponent {
   private translationHintField: BaseComponent | undefined;
@@ -11,13 +13,28 @@ export class Hints extends BaseComponent {
 
   private puzzleIcon: BaseComponent | undefined;
 
-  constructor(addBackgroundImg: () => void) {
+  constructor(gameProps: GameProps, addBackgroundImg: () => void) {
     super({
       tagName: 'section',
       classNames: 'hints',
     });
+    const urlSound = getSound(gameProps);
+    const audio = new Audio(`./assets/${urlSound}`);
+
+    this.drawAudioHint(audio);
     this.drawTranslationHint();
     this.drawBackgroundImgHint(addBackgroundImg);
+  }
+
+  drawAudioHint(audio: HTMLAudioElement) {
+    const audioIcon = new BaseComponent({
+      tagName: 'span',
+      classNames: ['material-symbols-outlined', 'audio'],
+      textContent: 'play_circle',
+    });
+    audioIcon.setOnclick(() => audio.play());
+
+    this.insertChildren([audioIcon]);
   }
 
   drawTranslationHint() {

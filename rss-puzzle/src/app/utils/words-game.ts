@@ -80,11 +80,10 @@ export function getImage(level: number, round: number) {
   return undefined;
 }
 
-// export function addBackground(
-//   span: BaseComponent,
-//   urlImg: string | undefined,
-//   lengthCount: number,
-//   y: number,
-// ) {
-//   span.setBackgroundImg(`../../../../assets/${urlImg}`, `${-lengthCount}px ${y}%`);
-// }
+export function getSound(gameProps: GameProps) {
+  const wordCollection = getWordCollection(gameProps.level);
+  if (wordCollection) {
+    return wordCollection?.rounds[gameProps.round].words[gameProps.sentence].audioExample;
+  }
+  return undefined;
+}
