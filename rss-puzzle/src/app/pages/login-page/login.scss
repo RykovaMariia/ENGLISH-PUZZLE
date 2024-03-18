@@ -1,6 +1,13 @@
 @use '../../../style/placeholders.scss';
 @use '../../../style/mixins.scss';
 
+.heading {
+  margin: auto;
+  @include mixins.media-middle {
+    font-size: 3rem;
+  }
+}
+
 .login {
   opacity: 0;
   margin-top: 10vh;
@@ -11,8 +18,7 @@
 
   @extend %animation-main;
   @include mixins.animate(main, 0.5s, ease, forwards);
-}
-
-.heading {
-  margin: auto;
+  @include mixins.media-middle {
+    margin-top: 7vh;
+  }
 }

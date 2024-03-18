@@ -1,3 +1,5 @@
+@use './constants.scss';
+
 @mixin animate($animation, $duration, $method, $mode: 'none') {
   animation-name: $animation;
   animation-duration: $duration;
@@ -7,6 +9,18 @@
 
 @mixin keyframes($name) {
   @keyframes #{$name} {
+    @content;
+  }
+}
+
+@mixin media-middle {
+  @media (max-width: constants.$middle-width) {
+    @content;
+  }
+}
+
+@mixin media-tablet {
+  @media (max-width: constants.$tablet-width) {
     @content;
   }
 }

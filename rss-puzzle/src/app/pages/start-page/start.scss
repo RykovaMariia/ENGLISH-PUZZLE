@@ -6,6 +6,10 @@
   flex-direction: column;
   padding: 100px;
   gap: 70px;
+
+  @include mixins.media-middle {
+    gap: 50px;
+  }
 }
 
 .personalized-greeting {
@@ -50,11 +54,15 @@
   }
 
   @include mixins.animate(welcome, 0.9s, ease, forwards);
+
+  @include mixins.media-middle {
+    font-size: 4rem;
+  }
 }
 
 .personalizedGreeting__user-name {
   font-size: 3.5rem;
-  font-weight: 800;
+  font-weight: 700;
   opacity: 0;
 
   @include mixins.keyframes(user-name) {
@@ -70,6 +78,10 @@
   animation-delay: 0.4s;
 
   @include mixins.animate(user-name, 0.9s, ease, forwards);
+
+  @include mixins.media-middle {
+    font-size: 3rem;
+  }
 }
 
 .button__start {
@@ -84,6 +96,10 @@
   animation-delay: 2.3s;
 
   @include mixins.animate(main, 0.5s, ease, forwards);
+  @include mixins.media-middle {
+    width: 200px;
+    font-size: 3rem;
+  }
 }
 
 .game-description {
@@ -98,13 +114,17 @@
 .name {
   opacity: 0;
   font-size: 3rem;
-  font-weight: 800;
+  font-weight: 700;
 
   @extend %animation-main;
 
   animation-delay: 2.8s;
 
   @include mixins.animate(main, 0.5s, ease, forwards);
+
+  @include mixins.media-middle {
+    font-size: 2.5rem;
+  }
 }
 
 .description {
@@ -113,11 +133,15 @@
   line-height: 1.5;
   letter-spacing: 2px;
   opacity: 0.001;
-  width: 800px;
+  max-width: 700px;
 
   @extend %animation-main;
 
   animation-delay: 3s;
 
   @include mixins.animate(main, 0.5s, ease, forwards);
+
+  @include mixins.media-middle {
+    font-size: 2rem;
+  }
 }

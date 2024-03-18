@@ -63,9 +63,30 @@ export class Start extends BaseComponent {
       tagName: 'p',
       classNames: 'description',
       textContent:
-        'Click on words, collect phrases. Words can be drag and drop. Select tooltips in the menu',
+        'Click on words, collect phrases. Words can be drag and drop. Select tooltips in the menu\n\n',
+    });
+    const translationIcon = new BaseComponent({
+      tagName: 'span',
+      classNames: 'material-symbols-outlined',
+      textContent: 'lightbulb',
+    });
+    const translationHint = new BaseComponent({
+      tagName: 'span',
+      classNames: 'description-hint',
+      textContent: ' - you can turn on the translation hint\n',
+    });
+    const puzzleIcon = new BaseComponent({
+      tagName: 'span',
+      classNames: 'material-symbols-outlined',
+      textContent: 'extension',
+    });
+    const puzzleHint = new BaseComponent({
+      tagName: 'span',
+      classNames: 'description-hint',
+      textContent: ' - you can turn on the background image hint\n',
     });
 
+    description.insertChildren([translationIcon, translationHint, puzzleIcon, puzzleHint]);
     sectionGameDescription.insertChildren([headingPuzzle, description]);
     this.insertChild(sectionGameDescription.getElement());
   }

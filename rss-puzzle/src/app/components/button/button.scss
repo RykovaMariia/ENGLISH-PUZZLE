@@ -1,4 +1,5 @@
 @use '../../../style/constants.scss';
+@use '../../../style/mixins.scss';
 
 .button {
   cursor: pointer;
@@ -27,5 +28,9 @@
     box-shadow: constants.$color-shadow;
     transform: scale(100%);
     cursor: auto;
+  }
+
+  @include mixins.media-middle {
+    font-size: 1.7rem;
   }
 }

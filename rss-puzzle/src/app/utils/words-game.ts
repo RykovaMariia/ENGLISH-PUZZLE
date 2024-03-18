@@ -7,7 +7,7 @@ import { wordCollectionLevel6 } from '../data/wordCollectionLevel6';
 import { GameProps } from '../interfaces/game-props';
 import { WordCollection } from '../interfaces/words';
 
-const WIDTH_CONTAINER = 800;
+const WIDTH_CONTAINER = 700;
 
 function getWordCollection(level: number) {
   let wordCollection: WordCollection | undefined;
