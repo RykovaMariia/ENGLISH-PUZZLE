@@ -47,6 +47,7 @@ export type LocalStorageState = {
   userFullName: UserFullName;
   translateHint: string;
   puzzleHint: string;
+  audioHint: string;
 };
 
 interface UserFullName {

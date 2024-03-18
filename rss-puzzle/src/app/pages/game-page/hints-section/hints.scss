@@ -7,7 +7,7 @@
   justify-content: end;
   align-items: center;
   flex-direction: row;
-  gap: 30px;
+  gap: 10px;
 }
 
 .translation-field {
@@ -19,7 +19,7 @@
   user-select: none;
   width: max-content;
   background-color: constants.$color-background-body-light;
-  padding: 10px;
+  padding: 5px;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -6,6 +6,12 @@ import { IRouter } from '../../interfaces/router';
 import { AppRoute } from '../../enums/app-route';
 import { Button } from '../../components/button/button-component';
 
+const TextContentHint = [
+  { icon: 'lightbulb', description: 'translation' },
+  { icon: 'extension', description: 'background image' },
+  { icon: 'volume_up', description: 'pronunciation' },
+];
+
 export class Start extends BaseComponent {
   constructor(private router: IRouter) {
     super({
@@ -49,6 +55,7 @@ export class Start extends BaseComponent {
     this.insertChild(startButton.getElement());
   }
 
+  // eslint-disable-next-line max-lines-per-function
   drawGameDescription() {
     const sectionGameDescription = new BaseComponent({
       tagName: 'section',
@@ -65,28 +72,21 @@ export class Start extends BaseComponent {
       textContent:
         'Click on words, collect phrases. Words can be drag and drop. Select tooltips in the menu\n\n',
     });
-    const translationIcon = new BaseComponent({
-      tagName: 'span',
-      classNames: 'material-symbols-outlined',
-      textContent: 'lightbulb',
-    });
-    const translationHint = new BaseComponent({
-      tagName: 'span',
-      classNames: 'description-hint',
-      textContent: ' - you can turn on the translation hint\n',
-    });
-    const puzzleIcon = new BaseComponent({
-      tagName: 'span',
-      classNames: 'material-symbols-outlined',
-      textContent: 'extension',
-    });
-    const puzzleHint = new BaseComponent({
-      tagName: 'span',
-      classNames: 'description-hint',
-      textContent: ' - you can turn on the background image hint\n',
+
+    TextContentHint.forEach((el) => {
+      const icon = new BaseComponent({
+        tagName: 'span',
+        classNames: 'material-symbols-outlined',
+        textContent: el.icon,
+      });
+      const descriptionHint = new BaseComponent({
+        tagName: 'span',
+        classNames: 'description-hint',
+        textContent: ` - you can turn on the ${el.description} hint\n`,
+      });
+      description.insertChildren([icon, descriptionHint]);
     });
 
-    description.insertChildren([translationIcon, translationHint, puzzleIcon, puzzleHint]);
     sectionGameDescription.insertChildren([headingPuzzle, description]);
     this.insertChild(sectionGameDescription.getElement());
   }

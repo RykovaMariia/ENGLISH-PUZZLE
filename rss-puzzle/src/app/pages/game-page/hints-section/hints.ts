@@ -13,33 +13,33 @@ export class Hints extends BaseComponent {
 
   private puzzleIcon: BaseComponent | undefined;
 
+  private audioHintIcon: BaseComponent<HTMLElement> | undefined;
+
+  private audioIcon: BaseComponent<HTMLElement>;
+
   constructor(gameProps: GameProps, addBackgroundImg: () => void) {
     super({
       tagName: 'section',
       classNames: 'hints',
     });
-    const urlSound = getSound(gameProps);
-    this.drawAudioHint(urlSound || '');
-    this.drawTranslationHint();
-    this.drawBackgroundImgHint(addBackgroundImg);
-  }
 
-  drawAudioHint(urlSound: string) {
-    const audioIcon = new BaseComponent({
+    const urlSound = getSound(gameProps);
+    this.audioIcon = new BaseComponent({
       tagName: 'span',
       classNames: ['material-symbols-outlined', 'audio'],
       textContent: 'play_circle',
     });
     const audio = new Audio(`./assets/${urlSound}`);
 
-    audioIcon.setOnclick(() => {
+    this.audioIcon.setOnclick(() => {
       audio.play();
-      audioIcon.setClassName('audio-play');
+      this.audioIcon.setClassName('audio-play');
     });
-    // eslint-disable-next-line no-param-reassign
-    audio.onended = () => audioIcon.removeClassName('audio-play');
+    audio.onended = () => this.audioIcon.removeClassName('audio-play');
 
-    this.insertChildren([audioIcon]);
+    this.drawTranslationHint();
+    this.drawBackgroundImgHint(addBackgroundImg);
+    this.drawAudioHint();
   }
 
   drawTranslationHint() {
@@ -94,6 +94,29 @@ export class Hints extends BaseComponent {
     this.insertChildren([backgroundImgHint]);
   }
 
+  drawAudioHint() {
+    const audioHint = new Button(
+      {
+        classNames: ['hint'],
+      },
+      () => {
+        localStorageService.toggleData('audioHint', 'on');
+        this.setAudioHintState();
+      },
+    );
+
+    this.audioHintIcon = new BaseComponent({
+      tagName: 'span',
+      classNames: 'material-symbols-outlined',
+    });
+
+    this.setAudioHintState();
+
+    audioHint.insertChild(this.audioHintIcon.getElement());
+
+    this.insertChildren([audioHint]);
+  }
+
   setTranslateHintState() {
     if (localStorageService.getData('translateHint')) {
       this.translationIcon?.setTextContent('lightbulb');
@@ -109,6 +132,16 @@ export class Hints extends BaseComponent {
       this.puzzleIcon?.setTextContent('extension');
     } else {
       this.puzzleIcon?.setTextContent('extension_off');
+    }
+  }
+
+  setAudioHintState() {
+    if (localStorageService.getData('audioHint')) {
+      this.audioHintIcon?.setTextContent('volume_up');
+      this.getElement().prepend(this.audioIcon.getElement());
+    } else {
+      this.audioHintIcon?.setTextContent('volume_off');
+      this.audioIcon.destroy();
     }
   }
 }
