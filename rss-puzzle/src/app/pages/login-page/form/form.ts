@@ -86,7 +86,7 @@ export class Form extends BaseComponent<HTMLFormElement> {
       {
         attribute: { name: 'type', value: 'submit' },
         textContent: 'Login',
-        classNames: 'button__login',
+        classNames: 'button_login',
       },
       (e) => {
         e.preventDefault();

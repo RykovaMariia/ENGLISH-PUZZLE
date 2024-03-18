@@ -1,0 +1,40 @@
+@use '../../../../style/constants.scss';
+
+.game-selection {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
+
+.game-name {
+  font-size: 2rem;
+}
+
+.selects {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+
+  .label {
+    font-size: 1.6rem;
+    margin-right: 5px;
+  }
+}
+
+.select {
+  appearance: none;
+  cursor: pointer;
+  border: 0;
+  outline: 0;
+  font: inherit;
+  font-size: 1.4rem;
+  width: 40px;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+  box-shadow: 0 0 5px constants.$color-shadow;
+  background-color: constants.$color-form;
+}

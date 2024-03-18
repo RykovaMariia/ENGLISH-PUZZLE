@@ -87,3 +87,11 @@ export function getSound(gameProps: GameProps) {
   }
   return undefined;
 }
+
+export function getCountRound(level: number) {
+  const wordCollection = getWordCollection(level);
+  if (wordCollection) {
+    return wordCollection?.roundsCount;
+  }
+  return undefined;
+}

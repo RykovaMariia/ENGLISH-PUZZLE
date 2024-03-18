@@ -6,6 +6,7 @@ import { gameService } from '../../services/game-service';
 import { GameProps } from '../../interfaces/game-props';
 import { Hints } from './hints-section/hints';
 import { ButtonSection } from './buttons-section/buttons-section';
+import { GameSelection } from './game-selection/game-selection';
 
 export class Game extends BaseComponent {
   private hints: BaseComponent | undefined;
@@ -15,6 +16,8 @@ export class Game extends BaseComponent {
   private sourceSection: SourceSection | undefined;
 
   private buttons: ButtonSection | undefined;
+
+  private gameSelection: GameSelection | undefined;
 
   constructor() {
     super({
@@ -26,6 +29,7 @@ export class Game extends BaseComponent {
   }
 
   removeGame() {
+    this.gameSelection?.destroy();
     this.hints?.destroy();
     this.resultSection?.destroy();
     this.sourceSection?.destroy();
@@ -33,6 +37,7 @@ export class Game extends BaseComponent {
   }
 
   drawGame(gameProps: GameProps, words: string[] | undefined) {
+    this.gameSelection = new GameSelection(gameProps, () => this.redrawGame());
     this.resultSection = new ResultSection(gameProps);
     this.sourceSection = new SourceSection(words || [], gameProps);
     this.hints = new Hints(gameProps, () =>
@@ -44,7 +49,13 @@ export class Game extends BaseComponent {
       clickAutoComplete: () => this.clickAutoComplete(gameProps.sentence),
     });
     this.addClickWordCardsHandler(true, gameProps.sentence);
-    this.insertChildren([this.hints, this.resultSection, this.sourceSection, this.buttons]);
+    this.insertChildren([
+      this.gameSelection,
+      this.hints,
+      this.resultSection,
+      this.sourceSection,
+      this.buttons,
+    ]);
   }
 
   clickCheckButton(gameProps: GameProps) {
@@ -58,6 +69,10 @@ export class Game extends BaseComponent {
 
   clickContinueButton() {
     gameService.nextSentence();
+    this.redrawGame();
+  }
+
+  redrawGame() {
     this.removeGame();
     this.drawGame(gameService.getGameProps(), gameService.getWords());
   }
