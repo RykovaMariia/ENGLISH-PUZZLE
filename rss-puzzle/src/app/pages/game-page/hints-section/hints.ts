@@ -19,20 +19,25 @@ export class Hints extends BaseComponent {
       classNames: 'hints',
     });
     const urlSound = getSound(gameProps);
-    const audio = new Audio(`./assets/${urlSound}`);
-
-    this.drawAudioHint(audio);
+    this.drawAudioHint(urlSound || '');
     this.drawTranslationHint();
     this.drawBackgroundImgHint(addBackgroundImg);
   }
 
-  drawAudioHint(audio: HTMLAudioElement) {
+  drawAudioHint(urlSound: string) {
     const audioIcon = new BaseComponent({
       tagName: 'span',
       classNames: ['material-symbols-outlined', 'audio'],
       textContent: 'play_circle',
     });
-    audioIcon.setOnclick(() => audio.play());
+    const audio = new Audio(`./assets/${urlSound}`);
+
+    audioIcon.setOnclick(() => {
+      audio.play();
+      audioIcon.setClassName('audio-play');
+    });
+    // eslint-disable-next-line no-param-reassign
+    audio.onended = () => audioIcon.removeClassName('audio-play');
 
     this.insertChildren([audioIcon]);
   }
