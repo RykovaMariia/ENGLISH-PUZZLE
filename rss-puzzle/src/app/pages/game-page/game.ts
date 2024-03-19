@@ -7,6 +7,7 @@ import { GameProps } from '../../interfaces/game-props';
 import { Hints } from './hints-section/hints';
 import { ButtonSection } from './buttons-section/buttons-section';
 import { GameSelection } from './game-selection/game-selection';
+import { IRouter } from '../../interfaces/router';
 
 export class Game extends BaseComponent {
   private hints: BaseComponent | undefined;
@@ -19,13 +20,13 @@ export class Game extends BaseComponent {
 
   private gameSelection: GameSelection | undefined;
 
-  constructor() {
+  constructor(private router: IRouter) {
     super({
       tagName: 'main',
       classNames: 'game',
     });
 
-    this.drawGame(gameService.getGameProps(), gameService.getWords());
+    this.drawGame(gameService.getGameProps(), gameService.getWords(), router);
   }
 
   removeGame() {
@@ -36,8 +37,8 @@ export class Game extends BaseComponent {
     this.buttons?.destroy();
   }
 
-  drawGame(gameProps: GameProps, words: string[] | undefined) {
-    this.gameSelection = new GameSelection(gameProps, () => this.redrawGame());
+  drawGame(gameProps: GameProps, words: string[] | undefined, router: IRouter) {
+    this.gameSelection = new GameSelection(gameProps, () => this.redrawGame(), router);
     this.resultSection = new ResultSection(gameProps);
     this.sourceSection = new SourceSection(words || [], gameProps);
     this.hints = new Hints(gameProps, () =>
@@ -74,7 +75,7 @@ export class Game extends BaseComponent {
 
   redrawGame() {
     this.removeGame();
-    this.drawGame(gameService.getGameProps(), gameService.getWords());
+    this.drawGame(gameService.getGameProps(), gameService.getWords(), this.router);
   }
 
   clickAutoComplete(sentence: number) {

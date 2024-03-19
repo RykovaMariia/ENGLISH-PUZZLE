@@ -3,6 +3,10 @@ import { BaseComponent } from '../../../components/base-component';
 import { GameProps } from '../../../interfaces/game-props';
 import { getCountRound } from '../../../utils/words-game';
 import { gameService } from '../../../services/game-service';
+import { localStorageService } from '../../../services/storage-service';
+import { IRouter } from '../../../interfaces/router';
+import { AppRoute } from '../../../enums/app-route';
+import { Button } from '../../../components/button/button-component';
 
 const COUNT_LEVEL = 6;
 
@@ -18,12 +22,30 @@ export class GameSelection extends BaseComponent {
     classNames: 'selects',
   });
 
-  constructor(gameProps: GameProps, redrawGame: () => void) {
+  private logoutButton = new Button(
+    {
+      textContent: 'logout',
+      classNames: 'button_logout',
+    },
+    () => {
+      localStorageService.removeData('userFullName');
+      localStorageService.removeData('audioHint');
+      localStorageService.removeData('puzzleHint');
+      localStorageService.removeData('translateHint');
+      this.router.navigate(AppRoute.Login);
+    },
+  );
+
+  constructor(
+    gameProps: GameProps,
+    redrawGame: () => void,
+    private router: IRouter,
+  ) {
     super({
       tagName: 'section',
       classNames: 'game-selection',
     });
-    this.insertChildren([this.headingPuzzle, this.selects]);
+    this.insertChildren([this.headingPuzzle, this.selects, this.logoutButton]);
     this.drawSelectLevel(gameProps, redrawGame);
     this.drawSelectRound(gameProps, redrawGame);
   }

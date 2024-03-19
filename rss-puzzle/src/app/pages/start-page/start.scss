@@ -84,8 +84,13 @@
   }
 }
 
-.button__start {
-  margin: auto;
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button_start {
   font-size: 3.5rem;
   font-weight: 700;
   width: 250px;
@@ -130,11 +135,15 @@
 
 .description {
   text-align: center;
-  font-size: 2.5rem;
+  font-size: 2rem;
   line-height: 1.5;
   letter-spacing: 2px;
   opacity: 0.001;
   max-width: 700px;
+
+  span {
+    font-size: 1.7rem;
+  }
 
   @extend %animation-main;
 
@@ -143,6 +152,9 @@
   @include mixins.animate(main, 0.5s, ease, forwards);
 
   @include mixins.media-middle {
-    font-size: 2rem;
+    font-size: 1.7rem;
+    span {
+      font-size: 1.5rem;
+    }
   }
 }

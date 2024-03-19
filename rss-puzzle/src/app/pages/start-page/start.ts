@@ -20,7 +20,7 @@ export class Start extends BaseComponent {
     });
 
     this.drawPersonalizedGreeting();
-    this.drawStartButton();
+    this.drawButtons();
     this.drawGameDescription();
   }
 
@@ -43,19 +43,38 @@ export class Start extends BaseComponent {
     this.insertChild(sectionPersonalizedGreeting.getElement());
   }
 
-  drawStartButton() {
+  drawButtons() {
+    const buttons = new BaseComponent({
+      tagName: 'div',
+      classNames: 'buttons',
+    });
+
     const startButton = new Button(
       {
-        textContent: 'Start',
-        classNames: 'button__start',
+        textContent: 'START',
+        classNames: 'button_start',
       },
       () => this.router.navigate(AppRoute.Game),
     );
 
-    this.insertChild(startButton.getElement());
+    const logoutButton = new Button(
+      {
+        textContent: 'LOGOUT',
+        classNames: 'button_start',
+      },
+      () => {
+        localStorageService.removeData('audioHint');
+        localStorageService.removeData('puzzleHint');
+        localStorageService.removeData('translateHint');
+        localStorageService.removeData('userFullName');
+        this.router.navigate(AppRoute.Login);
+      },
+    );
+
+    buttons.insertChildren([startButton, logoutButton]);
+    this.insertChild(buttons);
   }
 
-  // eslint-disable-next-line max-lines-per-function
   drawGameDescription() {
     const sectionGameDescription = new BaseComponent({
       tagName: 'section',
@@ -82,7 +101,7 @@ export class Start extends BaseComponent {
       const descriptionHint = new BaseComponent({
         tagName: 'span',
         classNames: 'description-hint',
-        textContent: ` - you can turn on the ${el.description} hint\n`,
+        textContent: ` - turn on the ${el.description} hint\n`,
       });
       description.insertChildren([icon, descriptionHint]);
     });
