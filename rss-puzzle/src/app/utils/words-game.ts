@@ -40,7 +40,9 @@ function getWordCollection(level: number) {
 export function getWords(gameProps: GameProps) {
   const wordCollection = getWordCollection(gameProps.level);
   if (wordCollection) {
-    return wordCollection?.rounds[gameProps.round].words[gameProps.sentence].textExample.split(' ');
+    return wordCollection?.rounds[gameProps.round - 1].words[gameProps.sentence].textExample.split(
+      ' ',
+    );
   }
   return undefined;
 }
@@ -48,7 +50,8 @@ export function getWords(gameProps: GameProps) {
 export function getRussianSentence(gameProps: GameProps) {
   const wordCollection = getWordCollection(gameProps.level);
   if (wordCollection) {
-    return wordCollection?.rounds[gameProps.round].words[gameProps.sentence].textExampleTranslate;
+    return wordCollection?.rounds[gameProps.round - 1].words[gameProps.sentence]
+      .textExampleTranslate;
   }
   return undefined;
 }
@@ -75,7 +78,7 @@ export function getLengthWord(words: string[]) {
 export function getImage(level: number, round: number) {
   const wordCollection = getWordCollection(level);
   if (wordCollection) {
-    return wordCollection?.rounds[round].levelData.imageSrc;
+    return wordCollection?.rounds[round - 1].levelData.imageSrc;
   }
   return undefined;
 }
@@ -83,7 +86,7 @@ export function getImage(level: number, round: number) {
 export function getSound(gameProps: GameProps) {
   const wordCollection = getWordCollection(gameProps.level);
   if (wordCollection) {
-    return wordCollection?.rounds[gameProps.round].words[gameProps.sentence].audioExample;
+    return wordCollection?.rounds[gameProps.round - 1].words[gameProps.sentence].audioExample;
   }
   return undefined;
 }
@@ -92,6 +95,15 @@ export function getCountRound(level: number) {
   const wordCollection = getWordCollection(level);
   if (wordCollection) {
     return wordCollection.roundsCount - 1;
+  }
+  return undefined;
+}
+
+export function getDescriptionImg(gameProps: GameProps) {
+  const wordCollection = getWordCollection(gameProps.level);
+  if (wordCollection) {
+    const { author, name, year } = wordCollection.rounds[gameProps.round - 1].levelData;
+    return `${author} "${name}" ${year}`;
   }
   return undefined;
 }

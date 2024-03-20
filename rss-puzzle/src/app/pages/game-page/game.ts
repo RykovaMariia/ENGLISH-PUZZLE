@@ -8,7 +8,7 @@ import { Hints } from './hints-section/hints';
 import { ButtonSection } from './buttons-section/buttons-section';
 import { GameSelection } from './game-selection/game-selection';
 import { IRouter } from '../../interfaces/router';
-import { getCountRound } from '../../utils/words-game';
+import { getCountRound, getDescriptionImg, getImage } from '../../utils/words-game';
 import { localStorageService } from '../../services/storage-service';
 
 export class Game extends BaseComponent {
@@ -49,7 +49,7 @@ export class Game extends BaseComponent {
     this.buttons = new ButtonSection({
       clickCheckButton: () => this.clickCheckButton(gameProps),
       clickContinueButton: () => this.clickContinueButton(gameProps),
-      clickAutoComplete: () => this.clickAutoComplete(gameProps.sentence),
+      clickAutoComplete: () => this.clickAutoComplete(gameProps),
     });
     this.addClickWordCardsHandler(true, gameProps.sentence);
     this.insertChildren([
@@ -63,10 +63,25 @@ export class Game extends BaseComponent {
 
   clickCheckButton(gameProps: GameProps) {
     if (this.resultSection?.isCorrectedWordOrder(gameProps)) {
-      this.addClickWordCardsHandler(false, gameProps.sentence);
-      this.buttons?.setCorrectOrderButtonState();
+      if (gameProps.sentence === 9) {
+        this.drawImgAndDescriptionImg(gameProps);
+      } else {
+        this.addClickWordCardsHandler(false, gameProps.sentence);
+        this.buttons?.setCorrectOrderButtonState();
+      }
     } else {
       this.resultSection?.selectedUncorrectedWordOrder(gameProps);
+    }
+  }
+
+  drawImgAndDescriptionImg(gameProps: GameProps) {
+    if (this.resultSection) {
+      this.resultSection.setClassName('result_completed');
+      this.resultSection.setBackgroundImg(`${getImage(gameProps.level, gameProps.round)}`, 0, 0);
+    }
+    if (this.sourceSection) {
+      this.sourceSection.getElement().innerHTML = '';
+      this.sourceSection.setTextContent(getDescriptionImg(gameProps) || '');
     }
   }
 
@@ -104,16 +119,19 @@ export class Game extends BaseComponent {
     this.drawGame(gameService.getGameProps(), gameService.getWords(), this.router);
   }
 
-  clickAutoComplete(sentence: number) {
+  clickAutoComplete(gameProps: GameProps) {
     this.sourceSection?.getSourceWordElements()?.forEach((el) => {
-      this.resultSection?.addEmptyInResult(el, sentence);
-      this.resultSection?.deleteSelected(sentence);
+      this.resultSection?.addEmptyInResult(el, gameProps.sentence);
+      this.resultSection?.deleteSelected(gameProps.sentence);
       el.setOnclick(null);
     });
 
-    this.resultSection?.getResultEmptyElements(sentence).forEach((el) => {
+    this.resultSection?.getResultEmptyElements(gameProps.sentence).forEach((el) => {
       this.sourceSection?.addWordInSource(el.getElement());
     });
+    if (gameProps.sentence === 9) {
+      this.drawImgAndDescriptionImg(gameProps);
+    }
 
     this.buttons?.setAutoCompleteButtonState();
   }

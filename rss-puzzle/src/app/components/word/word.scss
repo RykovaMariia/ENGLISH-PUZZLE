@@ -1,4 +1,6 @@
 @use '../../../style/constants.scss';
+@use '../../../style/placeholders.scss';
+@use '../../../style/mixins.scss';
 
 .word {
   position: relative;
@@ -6,6 +8,8 @@
   user-select: none;
   text-align: center;
   height: 35px;
+  opacity: 1;
+  transition: all 2s ease;
 
   span {
     background-color: constants.$color-card;
@@ -25,6 +29,7 @@
     box-shadow: 0 0 3px constants.$color-background-body-light;
     background-size: 700px 350px;
     background-repeat: no-repeat;
+    transition: all 2s ease;
   }
 
   .left {
@@ -37,6 +42,7 @@
     transform: translateX(75%) translateY(-50%);
     border-radius: 100%;
     background-color: constants.$color-background-body-light;
+    transition: all 2s ease;
   }
 
   .right {
@@ -50,9 +56,30 @@
     border-radius: 100%;
     box-shadow: 1px 0 1px constants.$color-background-body-light;
     background-size: 700px 350px;
+    transition: all 2s ease;
   }
 }
 
 .uncorrected {
   box-shadow: 3px 3px 3px 6px constants.$color-text-invalid;
+}
+
+.result_completed .word {
+  .text,
+  .left,
+  .right {
+    @include mixins.keyframes(word) {
+      0% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    animation-delay: 1s;
+
+    @include mixins.animate(word, 2s, ease, forwards);
+  }
 }

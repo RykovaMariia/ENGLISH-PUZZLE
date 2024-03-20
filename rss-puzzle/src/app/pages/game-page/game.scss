@@ -23,6 +23,9 @@
 .result {
   border: solid 1px constants.$color-text-dark;
   border-radius: 5px;
+  width: 700px;
+  height: 350px;
+  background-size: 700px 350px;
 }
 
 .result-sentence {
