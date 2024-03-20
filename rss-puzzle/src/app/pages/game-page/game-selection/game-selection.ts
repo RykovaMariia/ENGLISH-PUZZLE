@@ -124,6 +124,8 @@ export class GameSelection extends BaseComponent {
       classNames: 'button_logout',
     },
     () => {
+      localStorageService.removeData('completedLevels');
+      localStorageService.removeData('completedRounds');
       localStorageService.removeData('userFullName');
       localStorageService.removeData('audioHint');
       localStorageService.removeData('puzzleHint');

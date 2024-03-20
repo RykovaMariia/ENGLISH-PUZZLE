@@ -3,4 +3,5 @@ export const enum AppRoute {
   Start = 'start',
   NotFound = 'not-found',
   Game = 'game',
+  Results = 'results',
 }

@@ -11,6 +11,7 @@ const returnStartOrLoginPage = async (router: IRouter) => {
   return new Login(router);
 };
 
+// eslint-disable-next-line max-lines-per-function
 export function createRoutes(router: IRouter) {
   return [
     {
@@ -34,12 +35,15 @@ export function createRoutes(router: IRouter) {
     {
       path: AppRoute.Game,
       component: async () => {
-        if (localStorageService.getData('userFullName')) {
-          const { Game } = await import('../pages/game-page/game');
-          return new Game(router);
-        }
-        const { Login } = await import('../pages/login-page/login');
-        return new Login(router);
+        const { Game } = await import('../pages/game-page/game');
+        return new Game(router);
+      },
+    },
+    {
+      path: AppRoute.Results,
+      component: async () => {
+        const { Results } = await import('../pages/results-page/result-page');
+        return new Results(router);
       },
     },
     {

@@ -120,11 +120,15 @@ export class Hints extends BaseComponent {
   setTranslateHintState() {
     if (localStorageService.getData('translateHint')) {
       this.translationIcon?.setTextContent('lightbulb');
-      this.translationHintField?.setTextContent(gameService.getRussianSentence() || '');
+      this.addTextContentInTranslationField();
     } else {
       this.translationIcon?.setTextContent('light_off');
       this.translationHintField?.setTextContent('');
     }
+  }
+
+  addTextContentInTranslationField() {
+    this.translationHintField?.setTextContent(gameService.getRussianSentence() || '');
   }
 
   setBackgroundImgHintState() {

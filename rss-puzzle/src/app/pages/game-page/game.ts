@@ -12,7 +12,7 @@ import { getCountRound, getDescriptionImg, getImage } from '../../utils/words-ga
 import { localStorageService } from '../../services/storage-service';
 
 export class Game extends BaseComponent {
-  private hints: BaseComponent | undefined;
+  private hints: Hints | undefined;
 
   private resultSection: ResultSection | undefined;
 
@@ -50,6 +50,7 @@ export class Game extends BaseComponent {
       clickCheckButton: () => this.clickCheckButton(gameProps),
       clickContinueButton: () => this.clickContinueButton(gameProps),
       clickAutoComplete: () => this.clickAutoComplete(gameProps),
+      router,
     });
     this.addClickWordCardsHandler(true, gameProps.sentence);
     this.insertChildren([
@@ -62,13 +63,14 @@ export class Game extends BaseComponent {
   }
 
   clickCheckButton(gameProps: GameProps) {
+    this.hints?.addTextContentInTranslationField();
     if (this.resultSection?.isCorrectedWordOrder(gameProps)) {
       if (gameProps.sentence === 9) {
         this.drawImgAndDescriptionImg(gameProps);
-      } else {
-        this.addClickWordCardsHandler(false, gameProps.sentence);
-        this.buttons?.setCorrectOrderButtonState();
+        this.buttons?.enableResultButton();
       }
+      this.addClickWordCardsHandler(false, gameProps.sentence);
+      this.buttons?.setCorrectOrderButtonState();
     } else {
       this.resultSection?.selectedUncorrectedWordOrder(gameProps);
     }
@@ -120,6 +122,7 @@ export class Game extends BaseComponent {
   }
 
   clickAutoComplete(gameProps: GameProps) {
+    this.hints?.addTextContentInTranslationField();
     this.sourceSection?.getSourceWordElements()?.forEach((el) => {
       this.resultSection?.addEmptyInResult(el, gameProps.sentence);
       this.resultSection?.deleteSelected(gameProps.sentence);
@@ -131,6 +134,7 @@ export class Game extends BaseComponent {
     });
     if (gameProps.sentence === 9) {
       this.drawImgAndDescriptionImg(gameProps);
+      this.buttons?.enableResultButton();
     }
 
     this.buttons?.setAutoCompleteButtonState();

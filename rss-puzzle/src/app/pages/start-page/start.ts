@@ -63,6 +63,8 @@ export class Start extends BaseComponent {
         classNames: 'button_start',
       },
       () => {
+        localStorageService.removeData('completedLevels');
+        localStorageService.removeData('completedRounds');
         localStorageService.removeData('audioHint');
         localStorageService.removeData('puzzleHint');
         localStorageService.removeData('translateHint');
