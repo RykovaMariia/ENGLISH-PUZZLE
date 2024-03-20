@@ -52,3 +52,7 @@
     background-size: 700px 350px;
   }
 }
+
+.uncorrected {
+  box-shadow: 3px 3px 3px 6px constants.$color-text-invalid;
+}

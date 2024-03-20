@@ -43,14 +43,6 @@
   border-radius: 10px;
 }
 
-.corrected {
-  border: solid 2px constants.$color-background-body-light;
-}
-
-.uncorrected {
-  border: solid 2px constants.$color-text-invalid;
-}
-
 .empty {
   text-align: center;
   cursor: default;

@@ -97,11 +97,15 @@ export class ResultSection extends BaseComponent {
     });
   }
 
-  selectedUncorrectedWordOrder() {
+  selectedUncorrectedWordOrder(gameProps: GameProps) {
+    const words = getWords({
+      level: gameProps.level,
+      round: gameProps.round,
+      sentence: gameProps.sentence,
+    });
+    if (!words) return;
     this.currentSentence.getChildren().forEach((el, i) => {
-      if (el.textContent === this.emptyHtmlElement[i].innerText) {
-        el.classList.add('corrected');
-      } else {
+      if (!(el.textContent === words[i])) {
         el.classList.add('uncorrected');
       }
     });

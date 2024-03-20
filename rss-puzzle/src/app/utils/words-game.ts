@@ -91,7 +91,7 @@ export function getSound(gameProps: GameProps) {
 export function getCountRound(level: number) {
   const wordCollection = getWordCollection(level);
   if (wordCollection) {
-    return wordCollection?.roundsCount;
+    return wordCollection.roundsCount - 1;
   }
   return undefined;
 }

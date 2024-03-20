@@ -48,11 +48,18 @@ export type LocalStorageState = {
   translateHint: string;
   puzzleHint: string;
   audioHint: string;
+  completedLevels: string[];
+  completedRounds: CompletedRounds[];
 };
 
 interface UserFullName {
   firstName: string;
   surname: string;
+}
+
+export interface CompletedRounds {
+  level: string;
+  rounds: string[];
 }
 
 export const localStorageService = new StorageService<LocalStorageState>('PUZZLE_RM');

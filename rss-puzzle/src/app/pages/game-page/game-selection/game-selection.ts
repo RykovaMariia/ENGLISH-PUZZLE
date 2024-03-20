@@ -10,6 +10,102 @@ import { Button } from '../../../components/button/button-component';
 
 const COUNT_LEVEL = 6;
 
+function openCloseDropdownMenu(dropdownMenu: BaseComponent) {
+  if (dropdownMenu.getStyleTransform() === 'scaleY(0)' || !dropdownMenu.getStyleTransform()) {
+    dropdownMenu.setStyleTransform('scaleY(1)');
+  } else {
+    dropdownMenu.setStyleTransform('scaleY(0)');
+  }
+}
+
+function change({
+  item,
+  dropdown,
+  redrawGame,
+  isLevel,
+}: {
+  item: BaseComponent;
+  dropdown: BaseComponent;
+  redrawGame: () => void;
+  isLevel: boolean;
+}) {
+  const selectedItem = item.getTextContent();
+  dropdown.setStyleTransform('scaleY(0)');
+  if (isLevel) {
+    gameService.setLevel(+selectedItem);
+  } else {
+    gameService.setRound(+selectedItem);
+  }
+  redrawGame();
+}
+
+function selectCompletedItem({
+  item,
+  numberItem,
+  isLevel,
+  level,
+}: {
+  item: BaseComponent;
+  numberItem: number;
+  isLevel: boolean;
+  level: number;
+}) {
+  if (isLevel) {
+    if (localStorageService.getData('completedLevels')?.includes(`${numberItem}`)) {
+      item.setClassName('item_completed');
+    }
+  } else {
+    const rounds = localStorageService.getData('completedRounds');
+    rounds?.forEach((el) => {
+      if (el.level === level.toString() && el.rounds.includes(`${numberItem}`)) {
+        item.setClassName('item_completed');
+      }
+    });
+  }
+}
+
+function getButton({
+  gameProps,
+  dropdownMenu,
+  redrawGame,
+  isLevel,
+}: {
+  gameProps: GameProps;
+  dropdownMenu: BaseComponent;
+  redrawGame: () => void;
+  isLevel: boolean;
+}) {
+  const button = new Button(
+    {
+      classNames: 'dropdown__button',
+      textContent: `${isLevel ? gameProps.level : gameProps.round}`,
+    },
+    () => {
+      openCloseDropdownMenu(dropdownMenu);
+    },
+  );
+
+  const count = isLevel ? COUNT_LEVEL : getCountRound(gameProps.level) || 1;
+  for (let i = 1; i <= count; i += 1) {
+    const item = new BaseComponent({
+      tagName: 'li',
+      classNames: 'item',
+      textContent: `${i}`,
+    });
+
+    selectCompletedItem({ item, numberItem: i, isLevel, level: gameProps.level });
+
+    item.setOnclick(() => {
+      change({ item, dropdown: dropdownMenu, redrawGame: () => redrawGame(), isLevel });
+    });
+
+    dropdownMenu.insertChild(item);
+  }
+
+  button.insertChild(dropdownMenu);
+  return button;
+}
+
 export class GameSelection extends BaseComponent {
   private headingPuzzle = new BaseComponent({
     tagName: 'h1',
@@ -46,80 +142,30 @@ export class GameSelection extends BaseComponent {
       classNames: 'game-selection',
     });
     this.insertChildren([this.headingPuzzle, this.selects, this.logoutButton]);
-    this.drawSelectLevel(gameProps, redrawGame);
-    this.drawSelectRound(gameProps, redrawGame);
+    this.drawDropdown(gameProps, redrawGame, true);
+    this.drawDropdown(gameProps, redrawGame, false);
   }
 
-  drawSelectLevel(gameProps: GameProps, redrawGame: () => void) {
-    const levelLabel = new BaseComponent({
-      tagName: 'label',
+  drawDropdown(gameProps: GameProps, redrawGame: () => void, isLevel: boolean) {
+    const wrapperDropdown = new BaseComponent({
+      tagName: 'div',
+      classNames: 'dropdown',
+    });
+
+    const nameMenu = new BaseComponent({
+      tagName: 'span',
       classNames: 'label',
-      textContent: 'Level',
-    });
-    levelLabel.setAttribute({ name: 'for', value: 'level' });
-
-    const levelSelect = new BaseComponent<HTMLSelectElement>({
-      tagName: 'select',
-      classNames: 'select',
-    });
-    levelSelect.setAttribute({ name: 'id', value: 'level' });
-
-    for (let i = 1; i <= COUNT_LEVEL; i += 1) {
-      const option = new BaseComponent<HTMLOptionElement>({
-        tagName: 'option',
-        classNames: 'level-option',
-        textContent: `${i}`,
-      });
-      option.setAttribute({ name: 'value', value: `${i}` });
-      if (i === gameProps.level) {
-        option.getElement().selected = true;
-      }
-      levelSelect.insertChild(option);
-    }
-
-    levelSelect.getElement().addEventListener('change', () => {
-      const newLevel = levelSelect.getElement().selectedIndex;
-      gameService.setLevel(newLevel + 1);
-      redrawGame();
+      textContent: `${isLevel ? 'Level' : 'Round'}`,
     });
 
-    this.selects.insertChildren([levelLabel, levelSelect]);
-  }
-
-  drawSelectRound(gameProps: GameProps, redrawGame: () => void) {
-    const roundLabel = new BaseComponent({
-      tagName: 'label',
-      classNames: 'label',
-      textContent: 'Round',
-    });
-    roundLabel.setAttribute({ name: 'for', value: 'round' });
-
-    const roundSelect = new BaseComponent<HTMLSelectElement>({
-      tagName: 'select',
-      classNames: 'select',
-    });
-    roundSelect.setAttribute({ name: 'id', value: 'round' });
-
-    const countRound = getCountRound(gameProps.level) || 1;
-    for (let i = 1; i <= countRound; i += 1) {
-      const option = new BaseComponent<HTMLOptionElement>({
-        tagName: 'option',
-        classNames: 'round-option',
-        textContent: `${i}`,
-      });
-      option.setAttribute({ name: 'value', value: `${i}` });
-      if (i - 1 === gameProps.round) {
-        option.getElement().selected = true;
-      }
-      roundSelect.insertChild(option);
-    }
-
-    roundSelect.getElement().addEventListener('change', () => {
-      const newRound = roundSelect.getElement().selectedIndex;
-      gameService.setRound(newRound);
-      redrawGame();
+    const dropdownMenu = new BaseComponent({
+      tagName: 'ul',
+      classNames: 'dropdown__list',
     });
 
-    this.selects.insertChildren([roundLabel, roundSelect]);
+    const button = getButton({ gameProps, dropdownMenu, redrawGame, isLevel });
+
+    wrapperDropdown.insertChildren([nameMenu, button]);
+    this.selects.insertChildren([wrapperDropdown]);
   }
 }

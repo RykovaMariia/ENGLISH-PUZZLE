@@ -88,4 +88,12 @@ export class BaseComponent<T extends HTMLElement = HTMLElement> {
     this.element.style.backgroundImage = `url(./assets/img/${urlImg})`;
     this.element.style.backgroundPosition = `${-lengthCount}px ${y}%`;
   }
+
+  setStyleTransform(transform: string) {
+    this.element.style.transform = transform;
+  }
+
+  getStyleTransform() {
+    return this.element.style.transform;
+  }
 }

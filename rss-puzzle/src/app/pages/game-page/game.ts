@@ -8,6 +8,8 @@ import { Hints } from './hints-section/hints';
 import { ButtonSection } from './buttons-section/buttons-section';
 import { GameSelection } from './game-selection/game-selection';
 import { IRouter } from '../../interfaces/router';
+import { getCountRound } from '../../utils/words-game';
+import { localStorageService } from '../../services/storage-service';
 
 export class Game extends BaseComponent {
   private hints: BaseComponent | undefined;
@@ -46,7 +48,7 @@ export class Game extends BaseComponent {
     );
     this.buttons = new ButtonSection({
       clickCheckButton: () => this.clickCheckButton(gameProps),
-      clickContinueButton: () => this.clickContinueButton(),
+      clickContinueButton: () => this.clickContinueButton(gameProps),
       clickAutoComplete: () => this.clickAutoComplete(gameProps.sentence),
     });
     this.addClickWordCardsHandler(true, gameProps.sentence);
@@ -64,11 +66,35 @@ export class Game extends BaseComponent {
       this.addClickWordCardsHandler(false, gameProps.sentence);
       this.buttons?.setCorrectOrderButtonState();
     } else {
-      this.resultSection?.selectedUncorrectedWordOrder();
+      this.resultSection?.selectedUncorrectedWordOrder(gameProps);
     }
   }
 
-  clickContinueButton() {
+  clickContinueButton(gameProps: GameProps) {
+    const currentLevel = gameProps.level.toString();
+    const currentRound = gameProps.round.toString();
+
+    if (gameProps.sentence === 9 && +currentRound === getCountRound(+currentLevel)) {
+      let levels = localStorageService.getData('completedLevels') || [];
+      levels.push(currentLevel);
+      levels = [...new Set(levels)];
+      localStorageService.saveData('completedLevels', levels);
+    }
+
+    if (gameProps.sentence === 9) {
+      const rounds = localStorageService.getData('completedRounds') || [];
+      if (rounds.length === 0 || !rounds.some((el) => el.level === currentLevel)) {
+        rounds.push({ level: currentLevel, rounds: [currentRound] });
+      } else {
+        rounds.forEach((el) => {
+          if (el.level === currentLevel && !el.rounds.includes(currentRound)) {
+            el.rounds.push(currentRound);
+          }
+        });
+      }
+      localStorageService.saveData('completedRounds', rounds);
+    }
+
     gameService.nextSentence();
     this.redrawGame();
   }
@@ -81,6 +107,7 @@ export class Game extends BaseComponent {
   clickAutoComplete(sentence: number) {
     this.sourceSection?.getSourceWordElements()?.forEach((el) => {
       this.resultSection?.addEmptyInResult(el, sentence);
+      this.resultSection?.deleteSelected(sentence);
       el.setOnclick(null);
     });
 

@@ -1,7 +1,7 @@
 import { getCountRound, getRussianSentence, getWords } from '../utils/words-game';
 
 const INITIAL_LEVEL = 1;
-const INITIAL_ROUND = 0;
+const INITIAL_ROUND = 1;
 const INITIAL_SENTENCE = 0;
 const MAX_SENTENCE = 9;
 
@@ -28,27 +28,30 @@ class GameService {
     return getWords(this.getGameProps());
   }
 
+  getLevel() {
+    return this.level;
+  }
+
   nextLevel() {
     this.level += 1;
-    this.round = 0;
+    this.round = 1;
     this.sentence = 0;
     return this.level;
   }
 
   setLevel(number: number) {
     this.level = number;
-    this.round = 0;
+    this.round = 1;
     this.sentence = 0;
   }
 
   nextRound() {
-    this.round += 1;
     const countRound = getCountRound(this.level) || 1;
     if (this.round < countRound) {
       this.round += 1;
       this.sentence = 0;
     } else {
-      this.round = 0;
+      this.round = 1;
       this.sentence = 0;
       this.nextLevel();
     }
