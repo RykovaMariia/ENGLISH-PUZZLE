@@ -130,6 +130,7 @@ export class GameSelection extends BaseComponent {
       localStorageService.removeData('audioHint');
       localStorageService.removeData('puzzleHint');
       localStorageService.removeData('translateHint');
+      gameService.resetGame();
       this.router.navigate(AppRoute.Login);
     },
   );

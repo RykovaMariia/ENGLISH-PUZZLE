@@ -11,6 +11,8 @@ import { IRouter } from '../../interfaces/router';
 import { getCountRound, getDescriptionImg, getImage } from '../../utils/words-game';
 import { localStorageService } from '../../services/storage-service';
 
+const MAX_SENTENCE = 9;
+
 export class Game extends BaseComponent {
   private hints: Hints | undefined;
 
@@ -63,9 +65,9 @@ export class Game extends BaseComponent {
   }
 
   clickCheckButton(gameProps: GameProps) {
-    this.hints?.addTextContentInTranslationField();
     if (this.resultSection?.isCorrectedWordOrder(gameProps)) {
-      if (gameProps.sentence === 9) {
+      this.hints?.addTextContentInTranslationField();
+      if (gameProps.sentence === MAX_SENTENCE) {
         this.drawImgAndDescriptionImg(gameProps);
         this.buttons?.enableResultButton();
       }
@@ -91,14 +93,14 @@ export class Game extends BaseComponent {
     const currentLevel = gameProps.level.toString();
     const currentRound = gameProps.round.toString();
 
-    if (gameProps.sentence === 9 && +currentRound === getCountRound(+currentLevel)) {
+    if (gameProps.sentence === MAX_SENTENCE && +currentRound === getCountRound(+currentLevel)) {
       let levels = localStorageService.getData('completedLevels') || [];
       levels.push(currentLevel);
       levels = [...new Set(levels)];
       localStorageService.saveData('completedLevels', levels);
     }
 
-    if (gameProps.sentence === 9) {
+    if (gameProps.sentence === MAX_SENTENCE) {
       const rounds = localStorageService.getData('completedRounds') || [];
       if (rounds.length === 0 || !rounds.some((el) => el.level === currentLevel)) {
         rounds.push({ level: currentLevel, rounds: [currentRound] });
@@ -132,7 +134,7 @@ export class Game extends BaseComponent {
     this.resultSection?.getResultEmptyElements(gameProps.sentence).forEach((el) => {
       this.sourceSection?.addWordInSource(el.getElement());
     });
-    if (gameProps.sentence === 9) {
+    if (gameProps.sentence === MAX_SENTENCE) {
       this.drawImgAndDescriptionImg(gameProps);
       this.buttons?.enableResultButton();
     }

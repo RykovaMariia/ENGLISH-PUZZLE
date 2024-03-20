@@ -3,7 +3,7 @@ import { getCountRound, getRussianSentence, getWords } from '../utils/words-game
 const INITIAL_LEVEL = 1;
 const INITIAL_ROUND = 1;
 const INITIAL_SENTENCE = 0;
-const MAX_SENTENCE = 9;
+export const MAX_SENTENCE = 9;
 
 class GameService {
   private level = INITIAL_LEVEL;
@@ -60,6 +60,12 @@ class GameService {
 
   setRound(number: number) {
     this.round = number;
+    this.sentence = 0;
+  }
+
+  resetGame() {
+    this.level = 1;
+    this.round = 1;
     this.sentence = 0;
   }
 

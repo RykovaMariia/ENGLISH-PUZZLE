@@ -78,8 +78,8 @@
       }
     }
 
-    animation-delay: 1s;
+    animation-delay: 0.5s;
 
-    @include mixins.animate(word, 2s, ease, forwards);
+    @include mixins.animate(word, 1.5s, ease, forwards);
   }
 }

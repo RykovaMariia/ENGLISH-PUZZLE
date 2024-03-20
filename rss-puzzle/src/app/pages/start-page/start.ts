@@ -5,6 +5,7 @@ import { localStorageService } from '../../services/storage-service';
 import { IRouter } from '../../interfaces/router';
 import { AppRoute } from '../../enums/app-route';
 import { Button } from '../../components/button/button-component';
+import { gameService } from '../../services/game-service';
 
 const TextContentHint = [
   { icon: 'lightbulb', description: 'translation' },
@@ -69,6 +70,7 @@ export class Start extends BaseComponent {
         localStorageService.removeData('puzzleHint');
         localStorageService.removeData('translateHint');
         localStorageService.removeData('userFullName');
+        gameService.resetGame();
         this.router.navigate(AppRoute.Login);
       },
     );

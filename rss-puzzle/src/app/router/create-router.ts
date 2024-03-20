@@ -42,7 +42,7 @@ export function createRoutes(router: IRouter) {
     {
       path: AppRoute.Results,
       component: async () => {
-        const { Results } = await import('../pages/results-page/result-page');
+        const { Results } = await import('../pages/results-page/results-page');
         return new Results(router);
       },
     },

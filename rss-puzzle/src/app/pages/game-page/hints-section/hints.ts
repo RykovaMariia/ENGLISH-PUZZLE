@@ -29,7 +29,9 @@ export class Hints extends BaseComponent {
       classNames: ['material-symbols-outlined', 'audio'],
       textContent: 'play_circle',
     });
-    const audio = new Audio(`./assets/${urlSound}`);
+    const audio = new Audio(
+      `https://raw.githubusercontent.com/rolling-scopes-school/rss-puzzle-data/main/${urlSound}`,
+    );
 
     this.audioIcon.setOnclick(() => {
       audio.play();
