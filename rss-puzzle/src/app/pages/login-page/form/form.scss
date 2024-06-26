@@ -1,0 +1,115 @@
+@use '../../../../style/constants.scss';
+@use '../../../../style/mixins.scss';
+
+.login__form {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  width: 300px;
+  padding: 40px 20px;
+  border-radius: 10px;
+  box-shadow: constants.$color-shadow;
+  background-color: constants.$color-form;
+
+  @include mixins.media-middle {
+    width: 250px;
+    padding: 20px;
+  }
+}
+
+.login__heading {
+  margin: auto;
+
+  @include mixins.media-middle {
+    font-size: 2.5rem;
+  }
+}
+
+.input {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.input__label {
+  cursor: pointer;
+  position: relative;
+  top: 0;
+  padding: 5px 10px;
+  color: constants.$color-text-grey;
+  transition: all 0.7s ease;
+
+  @include mixins.media-middle {
+    font-size: 1.7rem;
+  }
+}
+
+.input_empty + .input__label {
+  cursor: pointer;
+  position: relative;
+  top: 40px;
+  padding: 5px 10px;
+  color: constants.$color-text-grey;
+  transition: all 0.7s ease;
+
+  @include mixins.media-middle {
+    top: 30px;
+    padding: 5px 10px;
+  }
+}
+
+.input__field {
+  cursor: pointer;
+  width: 250px;
+  height: 30px;
+  padding: 5px 10px;
+  border: solid 1px constants.$color-form;
+  background-color: constants.$color-form;
+  border-bottom: 2px solid constants.$color-text-grey;
+  transition: all 0.7s ease;
+  font-family: inherit;
+  font-size: 2rem;
+  font-weight: 100;
+
+  &:focus,
+  &:valid {
+    outline: 0;
+    border-bottom-color: constants.$color-text-dark;
+
+    &:invalid {
+      border-bottom-color: constants.$color-text-invalid;
+    }
+
+    & + .input__label {
+      color: constants.$color-text-dark;
+    }
+  }
+
+  @include mixins.media-middle {
+    width: 210px;
+    height: 25px;
+    padding: 5px 10px;
+    font-size: 1.7rem;
+  }
+}
+
+.input_empty:focus + .input__label {
+  color: constants.$color-text-dark;
+  transform: translateY(-40px);
+}
+
+.error {
+  width: 250px;
+  color: constants.$color-text-invalid;
+  font-size: 1.2rem;
+
+  @include mixins.media-middle {
+    width: 210px;
+    font-size: 1rem;
+  }
+}
+
+.button_login {
+  margin-top: 20px;
+}

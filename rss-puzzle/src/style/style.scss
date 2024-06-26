@@ -1,0 +1,20 @@
+@use './constants.scss';
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 10px;
+}
+
+body {
+  font-family: Rubik, sans-serif;
+  font-size: 2rem;
+  color: constants.$color-text-dark;
+  background-color: constants.$color-background-body-light;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

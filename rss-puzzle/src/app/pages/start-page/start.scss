@@ -1,0 +1,161 @@
+@use '../../../style/placeholders.scss';
+@use '../../../style/mixins.scss';
+
+.start {
+  display: flex;
+  flex-direction: column;
+  padding: 100px;
+  gap: 70px;
+
+  @include mixins.media-middle {
+    gap: 50px;
+  }
+}
+
+.personalized-greeting {
+  position: relative;
+  top: 100px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+
+  @include mixins.keyframes(personalized-greeting) {
+    100% {
+      transform: translateY(-100px);
+    }
+  }
+
+  animation-delay: 1.3s;
+
+  @include mixins.animate(personalized-greeting, 1s, ease, forwards);
+}
+
+.personalized-greeting__heading {
+  position: relative;
+  font-size: 6rem;
+  font-weight: 900;
+
+  @include mixins.keyframes(welcome) {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    50% {
+      transform: translateY(-20px);
+      opacity: 1;
+    }
+
+    100% {
+      transform: translateY(0);
+    }
+  }
+
+  @include mixins.animate(welcome, 0.9s, ease, forwards);
+
+  @include mixins.media-middle {
+    font-size: 4rem;
+  }
+}
+
+.personalizedGreeting__user-name {
+  font-size: 3.5rem;
+  font-weight: 700;
+  opacity: 0;
+
+  @include mixins.keyframes(user-name) {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+  animation-delay: 0.4s;
+
+  @include mixins.animate(user-name, 0.9s, ease, forwards);
+
+  @include mixins.media-middle {
+    font-size: 3rem;
+  }
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button_start {
+  font-size: 3.5rem;
+  font-weight: 700;
+  width: 250px;
+  opacity: 0;
+
+  @extend %animation-main;
+
+  animation-delay: 2.3s;
+
+  @include mixins.animate(main, 0.5s, ease, forwards);
+
+  @include mixins.media-middle {
+    width: 200px;
+    font-size: 3rem;
+  }
+}
+
+.game-description {
+  position: relative;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.name {
+  opacity: 0;
+  font-size: 3rem;
+  font-weight: 700;
+
+  @extend %animation-main;
+
+  animation-delay: 2.8s;
+
+  @include mixins.animate(main, 0.5s, ease, forwards);
+
+  @include mixins.media-middle {
+    font-size: 2.5rem;
+  }
+}
+
+.description {
+  text-align: center;
+  font-size: 2rem;
+  line-height: 1.5;
+  letter-spacing: 2px;
+  opacity: 0.001;
+  max-width: 700px;
+
+  span {
+    font-size: 1.7rem;
+  }
+
+  @extend %animation-main;
+
+  animation-delay: 3s;
+
+  @include mixins.animate(main, 0.5s, ease, forwards);
+
+  @include mixins.media-middle {
+    font-size: 1.7rem;
+
+    span {
+      font-size: 1.5rem;
+    }
+  }
+}

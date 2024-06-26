@@ -1,0 +1,67 @@
+@use '../../../style/placeholders.scss';
+@use '../../../style/mixins.scss';
+@use '../../../style/constants.scss';
+
+.game {
+  opacity: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  padding: 30px;
+
+  @extend %animation-main;
+  @include mixins.animate(main, 0.5s, ease, forwards);
+
+  @include mixins.media-middle {
+    padding: 30px 20px;
+    gap: 20px;
+  }
+}
+
+.result {
+  border: solid 1px constants.$color-text-dark;
+  border-radius: 5px;
+  width: 700px;
+  height: 350px;
+  background-size: 700px 350px;
+}
+
+.result-sentence {
+  height: 35px;
+  width: 700px;
+  display: flex;
+}
+
+.source-data {
+  display: flex;
+  width: 700px;
+  height: 55px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  border: solid 1px constants.$color-text-dark;
+  border-radius: 10px;
+}
+
+.empty {
+  text-align: center;
+  cursor: default;
+  flex-grow: 1;
+  padding: 5px;
+}
+
+.button_hidden {
+  display: none;
+}
+
+.button_auto-complete {
+  width: 200px;
+  user-select: none;
+
+  @include mixins.media-middle {
+    width: 150px;
+  }
+}

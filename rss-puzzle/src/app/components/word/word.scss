@@ -1,0 +1,85 @@
+@use '../../../style/constants.scss';
+@use '../../../style/placeholders.scss';
+@use '../../../style/mixins.scss';
+
+.word {
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  height: 35px;
+  opacity: 1;
+  transition: all 2s ease;
+
+  span {
+    background-color: constants.$color-card;
+  }
+
+  .text {
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    color: constants.$color-text-grey;
+    text-shadow: 0 0 3px constants.$color-text-dark;
+    border-radius: 2px;
+    height: 100%;
+    padding: 5px 0;
+    padding-left: 6px;
+    font-size: 1.7rem;
+    box-shadow: 0 0 3px constants.$color-background-body-light;
+    background-size: 700px 350px;
+    background-repeat: no-repeat;
+    transition: all 2s ease;
+  }
+
+  .left {
+    z-index: 10;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    transform: translateX(75%) translateY(-50%);
+    border-radius: 100%;
+    background-color: constants.$color-background-body-light;
+    transition: all 2s ease;
+  }
+
+  .right {
+    z-index: 100;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    transform: translateX(-35%) translateY(-50%);
+    border-radius: 100%;
+    box-shadow: 1px 0 1px constants.$color-background-body-light;
+    background-size: 700px 350px;
+    transition: all 2s ease;
+  }
+}
+
+.uncorrected {
+  box-shadow: 3px 3px 3px 6px constants.$color-text-invalid;
+}
+
+.result_completed .word {
+  .text,
+  .left,
+  .right {
+    @include mixins.keyframes(word) {
+      0% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    animation-delay: 0.5s;
+
+    @include mixins.animate(word, 1.5s, ease, forwards);
+  }
+}
